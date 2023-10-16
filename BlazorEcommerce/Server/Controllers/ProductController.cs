@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Server.Data;
+using Server.Services.Products;
+using Shared;
 
 namespace Server.Controllers
 {
@@ -7,18 +9,18 @@ namespace Server.Controllers
     [Route("api/[controller]")]
     public class ProductController : ControllerBase
     {
-        private readonly DataContext _db;
+        private readonly IProductService _productService;
 
-        public ProductController(DataContext dataContext)
+        public ProductController(IProductService productService)
         {
-            _db = dataContext;
+            _productService = productService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Product>>> GetProducts()
+        public async Task<ActionResult<ServiceResponse<List<Product>>>> GetProducts()
         {
-            var products = await _db.Products.ToListAsync();
-            return Ok(products);
+            var response = await _productService.GetProductsAsync();
+            return Ok(response);
         }
     }
 }
