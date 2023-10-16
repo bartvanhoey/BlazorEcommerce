@@ -2,11 +2,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch and Debug Standalone Blazor WebAssembly App",
+            "name": "Debug",
             "type": "blazorwasm",
             "request": "launch",
             "cwd": "${workspaceFolder}",
-            "url": "https://localhost:7133/" // Tell launch where to find site
+            // "url": "https://localhost:7133/" // Tell launch where to find site
         },
         {
             "name": "Watch",
@@ -33,7 +33,7 @@
     ],
     "compounds": [
         {
-            "name": "Debug with Hot Reload",
+            "name": "HotReloadDebug",
             "configurations": [ "Watch", "Attach" ]
         }
     ]
