@@ -4,19 +4,22 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Shared;
 
 namespace BlazorEcommerce.Shared
 {
     public class Product
     {
         public int Id { get; set; }
-        public string Title{ get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string ImageUrl { get; set; } = string.Empty;
-        
+
         //[Column(TypeName = "decimal(18,4)")] specify precision 
         //Is already done in method OnModelCreating in DataContext
         public decimal Price { get; set; }
+        public Category? Category { get; set; }
+        public int CategoryID { get; set; }
 
     }
 }
