@@ -19,7 +19,7 @@ namespace BlazorEcommerce.Shared
         //Is already done in method OnModelCreating in DataContext
         public decimal Price { get; set; }
         public Category? Category { get; set; }
-        public int CategoryID { get; set; }
+        public int CategoryId { get; set; }
 
     }
 }
