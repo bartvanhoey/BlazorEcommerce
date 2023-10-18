@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Server.Data;
 using Server.Services.Products;
 using Shared;
 
@@ -11,10 +10,7 @@ namespace Server.Controllers
     {
         private readonly IProductService _productService;
 
-        public ProductController(IProductService productService)
-        {
-            _productService = productService;
-        }
+        public ProductController(IProductService productService) => _productService = productService;
 
         [HttpGet]
         public async Task<ActionResult<ServiceResponse<List<Product>>>> GetProducts()

@@ -10,7 +10,7 @@ public partial class ProductList
 
     protected override async Task OnInitializedAsync()
     {
-        var products = await ProductService!.GetProducts();
+        var products = await ProductService!.GetProductsAsync();
         Products = products;
     }
 }
