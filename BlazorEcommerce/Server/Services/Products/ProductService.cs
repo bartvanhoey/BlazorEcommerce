@@ -63,7 +63,7 @@ namespace Server.Services.Products
 
                     foreach (var word in words)
                     {
-                        if (word.Contains(searchText, StringComparison.OrdinalIgnoreCase) && !result.Contains(word));
+                        if (word.Contains(searchText, StringComparison.OrdinalIgnoreCase) && !result.Contains(word))
                         {
                             result.Add(word);
                         }
