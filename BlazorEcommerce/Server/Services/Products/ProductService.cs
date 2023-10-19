@@ -13,7 +13,7 @@ namespace Server.Services.Products
 
         public async Task<ServiceResponse<Product>> GetProductAsync(int productId)
         {
-            var product = await _db.Products.FirstOrDefaultAsync(p => p.Id == productId);
+            var product = await _db.Products.Include(p => p.Variants).ThenInclude(v => v.ProductType).FirstOrDefaultAsync(p => p.Id == productId);
             var response = new ServiceResponse<Product>();
             if (product == null)
             {
@@ -32,12 +32,12 @@ namespace Server.Services.Products
         }
 
         public async Task<ServiceResponse<List<Product>>> GetProductsAsync()
-            => new ServiceResponse<List<Product>>() { Data = await _db.Products.ToListAsync() };
+            => new ServiceResponse<List<Product>>() { Data = await _db.Products.Include(p => p.Variants).ToListAsync() };
 
         public async Task<ServiceResponse<List<Product>>> GetProductsByCategoryAsync(string categoryUrl)
         {
             var response = new ServiceResponse<List<Product>> {
-                Data = await _db.Products.Where(p => p.Category!= null && p.Category.Url.ToLower().Equals(categoryUrl.ToLower())).ToListAsync()
+                Data = await _db.Products.Where(p => p.Category!= null && p.Category.Url.ToLower().Equals(categoryUrl.ToLower())).Include(p => p.Variants).ToListAsync()
             };
 
             return response;
