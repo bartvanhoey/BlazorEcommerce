@@ -1,7 +1,7 @@
 @page "/product/{id:int}"
 @inherits ProductDetailsBase
 
-@if (product == null)
+@if (Product == null)
 {
     <span>@message</span>
 }
@@ -9,14 +9,19 @@ else
 {
     <div class="media">
         <div class="media-img-wrapper mr-2">
-            <img src="@product.ImageUrl" alt="@product.Title" class="media-img">
+            <img src="@Product.ImageUrl" alt="@Product.Title" class="media-img">
         </div>
         <div class="media-body">
-            <h2 class="mb-0">@product.Title</h2>
-            <p>@product.Description</p>
-            <h4 class="price">
-                @* $@product.Price *@
-            </h4>
+            <h2 class="mb-0">@Product.Title</h2>
+            <p>@Product.Description</p>
+            @if(GetProductVariant() != null){
+                @if(GetProductVariant()!.OriginalPrice > GetProductVariant()!.Price){
+                    <h6 class="text-muted original-price">$@GetProductVariant().OriginalPrice</h6> 
+                }
+                <h4 class="price">
+                    $@GetProductVariant().Price;
+                </h4>
+            }
         </div>
     </div>
 }
