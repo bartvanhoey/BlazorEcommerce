@@ -14,9 +14,23 @@ else
         <div class="media-body">
             <h2 class="mb-0">@Product.Title</h2>
             <p>@Product.Description</p>
-            @if(GetProductVariant() != null){
-                @if(GetProductVariant()!.OriginalPrice > GetProductVariant()!.Price){
-                    <h6 class="text-muted original-price">$@GetProductVariant().OriginalPrice</h6> 
+            @if (Product.Variants != null && Product.Variants.Count > 1)
+            {
+                <div class="mb-4">
+                    <select class="form-select" @bind="CurrentTypeId">
+                        @foreach (var variant in Product.Variants)
+                        {
+                            <option value="@variant.ProductTypeId">@variant.ProductType?.Name</option>
+                        }
+                    </select>
+                </div>
+            }
+
+            @if (GetProductVariant() != null)
+            {
+                @if (GetProductVariant()!.OriginalPrice > GetProductVariant()!.Price)
+                {
+                    <h6 class="text-muted original-price">$@GetProductVariant().OriginalPrice</h6>
                 }
                 <h4 class="price">
                     $@GetProductVariant().Price;

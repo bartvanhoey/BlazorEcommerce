@@ -10,7 +10,7 @@ namespace BlazorEcommerce.Client.Pages
         protected Product? Product = null;
         protected string message = string.Empty;
 
-        private int currentTypeId = 1;
+        protected int CurrentTypeId = 1;
 
         [Parameter] public int Id { get; set; }
 
@@ -23,7 +23,7 @@ namespace BlazorEcommerce.Client.Pages
                 Product = result.Data;
                 if (Product != null && Product.Variants.Count > 0)
                 {
-                    currentTypeId = Product.Variants[0].ProductTypeId;
+                    CurrentTypeId = Product.Variants[0].ProductTypeId;
                 }
             }
             else
@@ -31,7 +31,7 @@ namespace BlazorEcommerce.Client.Pages
         }
 
         protected ProductVariant GetProductVariant(){
-            var variant = Product?.Variants.FirstOrDefault(v => v.ProductTypeId == currentTypeId);
+            var variant = Product?.Variants.FirstOrDefault(v => v.ProductTypeId == CurrentTypeId);
             return variant!;
         }
 
