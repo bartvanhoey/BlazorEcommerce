@@ -28,5 +28,17 @@ namespace Client.Services.Products
             return response?.Data ?? new List<Product>();
             
         }
+
+        public async Task<List<string>> GetProductSearchSuggestionsAsync(string searchText)
+        {
+             var response = await _http.GetFromJsonAsync<ServiceResponse<List<string>>>($"api/product/searchsuggestions/{searchText}");
+            return response?.Data ?? new List<string>();
+        }
+
+        public async Task<List<Product>> SearchProductsAsync(string searchText)
+        {
+            var response = await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>($"api/product/search/{searchText}");
+            return response?.Data ?? new List<Product>();
+        }
     }
 }
