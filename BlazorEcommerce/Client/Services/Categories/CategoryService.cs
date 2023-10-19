@@ -18,5 +18,7 @@ namespace Client.Services.Categories
             if (response != null) return response;
             return new ServiceResponse<List<Category>> { Data = new List<Category>() };
         }
+
+        
     }
 }
