@@ -36,8 +36,22 @@ namespace Server.Services.Products
 
         public async Task<ServiceResponse<List<Product>>> GetProductsByCategoryAsync(string categoryUrl)
         {
-            var response = new ServiceResponse<List<Product>> {
-                Data = await _db.Products.Where(p => p.Category!= null && p.Category.Url.ToLower().Equals(categoryUrl.ToLower())).Include(p => p.Variants).ToListAsync()
+            var response = new ServiceResponse<List<Product>>
+            {
+                Data = await _db.Products.Where(p => p.Category != null && p.Category.Url.ToLower().Equals(categoryUrl.ToLower())).Include(p => p.Variants).ToListAsync()
+            };
+
+            return response;
+        }
+
+        public async Task<ServiceResponse<List<Product>>> SearchProductsAsync(string searchText)
+        {
+            var response = new ServiceResponse<List<Product>>
+            {
+                Data = await _db.Products
+                    .Where(p => p.Title.ToLower().Contains(searchText.ToLower()) 
+                    || p.Description.ToLower().Contains(searchText.ToLower()))
+                    .Include(p => p.Variants).ToListAsync()
             };
 
             return response;
