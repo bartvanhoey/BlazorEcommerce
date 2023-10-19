@@ -34,7 +34,7 @@ namespace Server.Data
                 }
                 );
 
-modelBuilder.Entity<Product>().Property(p => p.Price).HasColumnType("decimal(18,4)");
+
             modelBuilder.Entity<Product>().HasData(
                     new Product
                     {
