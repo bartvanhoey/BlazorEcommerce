@@ -16,13 +16,23 @@ namespace Client.Services.Products
         public async Task<ServiceResponse<Product>> GetProductAsync(int productId)
         {
             var response = await _http.GetFromJsonAsync<ServiceResponse<Product>>($"api/product/{productId}");
-            return response; 
+            return response;
         }
 
-        public async Task<List<Product>> GetProductsAsync()
+        public async Task<List<Product>> GetProductsAsync(string? categoryUrl = null)
         {
-            var response = await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>("api/product");
-            return response?.Data ?? new List<Product>();
+            if (categoryUrl == null)
+            {
+                var response = await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>("api/product");
+                return response?.Data ?? new List<Product>();
+            }
+            else
+            {
+                var response = await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>($"api/product/category/{categoryUrl}");
+                return response?.Data ?? new List<Product>();
+            }
+
+
         }
     }
 }

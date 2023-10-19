@@ -1,3 +1,4 @@
+using System.Reflection.Metadata.Ecma335;
 using Azure;
 using Server.Data;
 using Shared;
@@ -33,6 +34,13 @@ namespace Server.Services.Products
         public async Task<ServiceResponse<List<Product>>> GetProductsAsync()
             => new ServiceResponse<List<Product>>() { Data = await _db.Products.ToListAsync() };
 
+        public async Task<ServiceResponse<List<Product>>> GetProductsByCategoryAsync(string categoryUrl)
+        {
+            var response = new ServiceResponse<List<Product>> {
+                Data = await _db.Products.Where(p => p.Category!= null && p.Category.Url.ToLower().Equals(categoryUrl.ToLower())).ToListAsync()
+            };
 
+            return response;
+        }
     }
 }
