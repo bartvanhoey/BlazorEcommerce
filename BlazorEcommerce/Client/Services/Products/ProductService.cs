@@ -1,5 +1,6 @@
 
 
+
 namespace Client.Services.Products
 {
     public class ProductService : IProductService
@@ -13,6 +14,8 @@ namespace Client.Services.Products
 
         public List<Product> Products { get; set; } = new();
 
+        public event Action ProductsChanged;
+
         public async Task<ServiceResponse<Product>> GetProductAsync(int productId)
         {
             var response = await _http.GetFromJsonAsync<ServiceResponse<Product>>($"api/product/{productId}");
@@ -21,18 +24,9 @@ namespace Client.Services.Products
 
         public async Task<List<Product>> GetProductsAsync(string? categoryUrl = null)
         {
-            if (categoryUrl == null)
-            {
-                var response = await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>("api/product");
-                return response?.Data ?? new List<Product>();
-            }
-            else
-            {
-                var response = await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>($"api/product/category/{categoryUrl}");
-                return response?.Data ?? new List<Product>();
-            }
-
-
+            var response = await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>(categoryUrl == null ? "api/product" : $"api/product/category/{categoryUrl}");
+            return response?.Data ?? new List<Product>();
+            
         }
     }
 }

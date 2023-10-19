@@ -5,12 +5,14 @@ namespace BlazorEcommerce.Client.Shared;
 
 public partial class ProductList
 {
-    [Inject] protected IProductService? ProductService { get; set; } 
-    protected static List<Product> Products = new();
+    // [Inject] protected IProductService? ProductService { get; set; } 
 
-    protected override async Task OnInitializedAsync()
-    {
-        var products = await ProductService!.GetProductsAsync();
-        Products = products;
-    }
+    [Parameter]
+    public List<Product>? Products { get; set; }
+
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     // var products = await ProductService!.GetProductsAsync();
+    //     Products = products;
+    // }
 }
