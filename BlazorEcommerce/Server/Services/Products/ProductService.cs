@@ -11,6 +11,16 @@ namespace Server.Services.Products
 
         public ProductService(DataContext dataContext) => _db = dataContext;
 
+        public async Task<ServiceResponse<List<Product>>> GetFeaturedProductsAsync()
+        {
+            var response = new ServiceResponse<List<Product>>
+            {
+                Data = await _db.Products.Where(p => p.Featured).Include(p => p.Variants).ToListAsync()
+            };
+
+            return response;
+        }
+
         public async Task<ServiceResponse<Product>> GetProductAsync(int productId)
         {
             var product = await _db.Products.Include(p => p.Variants).ThenInclude(v => v.ProductType).FirstOrDefaultAsync(p => p.Id == productId);

@@ -24,7 +24,7 @@ namespace Client.Services.Products
 
         public async Task<List<Product>> GetProductsAsync(string? categoryUrl = null)
         {
-            var response = await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>(categoryUrl == null ? "api/product" : $"api/product/category/{categoryUrl}");
+            var response = await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>(categoryUrl == null ? "api/product/featured" : $"api/product/category/{categoryUrl}");
             return response?.Data ?? new List<Product>();
             
         }
