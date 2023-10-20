@@ -8,7 +8,14 @@
 
 <PageTitle>My Shop</PageTitle>
 
-<ProductList Products=@Products></ProductList>
+@if (SearchText == null && CategoryUrl == null)
+{
+    <FeaturedProducts Products="@Products"/>
+}
+else
+{
+    <ProductList Products=@Products/>
+}
 
 
 @code {
