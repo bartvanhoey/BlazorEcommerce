@@ -1,3 +1,5 @@
+using Shared.Dtos;
+
 namespace Client.Services.Products
 {
     public interface IProductService
@@ -6,7 +8,7 @@ namespace Client.Services.Products
         List<Product> Products { get; set; }
         Task<List<Product>> GetProductsAsync(string? categoryUrl = null);
         Task<ServiceResponse<Product>> GetProductAsync(int productId);
-        Task<List<Product>> SearchProductsAsync(string searchText);
+        Task<List<ProductSearchResult>> SearchProductsAsync(string searchText, int page);
         Task<List<string>> GetProductSearchSuggestionsAsync(string searchText);
     }
 }

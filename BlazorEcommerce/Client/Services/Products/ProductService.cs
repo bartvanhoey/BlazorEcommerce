@@ -1,6 +1,8 @@
 
 
 
+using Shared.Dtos;
+
 namespace Client.Services.Products
 {
     public class ProductService : IProductService
@@ -35,10 +37,10 @@ namespace Client.Services.Products
             return response?.Data ?? new List<string>();
         }
 
-        public async Task<List<Product>> SearchProductsAsync(string searchText)
+        public async Task<List<ProductSearchResult>> SearchProductsAsync(string searchText, int page)
         {
-            var response = await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>($"api/product/search/{searchText}");
-            return response?.Data ?? new List<Product>();
+            var response = await _http.GetFromJsonAsync<ServiceResponse<List<ProductSearchResult>>>($"api/product/search/{searchText}/{page}");
+            return response?.Data ?? new List<ProductSearchResult>();
         }
     }
 }
