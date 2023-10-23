@@ -2,6 +2,7 @@ using System.Reflection.Metadata.Ecma335;
 using Azure;
 using Server.Data;
 using Shared;
+using Shared.Dtos;
 
 namespace Server.Services.Products
 {
@@ -89,11 +90,20 @@ namespace Server.Services.Products
             return new ServiceResponse<List<string>> { Data = result };
         }
 
-        public async Task<ServiceResponse<List<Product>>> SearchProductsAsync(string searchText)
+        public async Task<ServiceResponse<ProductSearchResult>> SearchProductsAsync(string searchText, int currentPage)
         {
-            var response = new ServiceResponse<List<Product>>
+            var pageResults = 2f;
+            var pageCount = Math.Ceiling((await FindProductsBySearchText(searchText)).Count / pageResults);
+            var products = await _db.Products
+                                .Where(p => p.Title.ToLower().Contains(searchText.ToLower()) || p.Description.ToLower().Contains(searchText.ToLower()))
+                                .Include(p => p.Variants)
+                                .Skip((currentPage - 1) * (int)pageResults)
+                                .Take((int)pageResults)
+                                .ToListAsync();
+
+            var response = new ServiceResponse<ProductSearchResult>
             {
-                Data = await FindProductsBySearchText(searchText)
+                Data = new ProductSearchResult(products, currentPage, pageCount) 
             };
 
             return response;

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Server.Services.Products;
 using Shared;
+using Shared.Dtos;
 
 namespace Server.Controllers
 {
@@ -41,10 +42,10 @@ namespace Server.Controllers
             return Ok(result);
         }
 
-        [HttpGet("search/{searchText}")]
-        public async Task<ActionResult<ServiceResponse<List<Product>>>> SearchProducts(string searchText)
+        [HttpGet("search/{searchText}/{page}")]
+        public async Task<ActionResult<ServiceResponse<List<ProductSearchResult>>>> SearchProducts(string searchText, int page = 1)
         {
-            var result = await _productService.SearchProductsAsync(searchText);
+            var result = await _productService.SearchProductsAsync(searchText, page);
             return Ok(result);
         }
 
