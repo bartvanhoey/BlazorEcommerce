@@ -27,7 +27,7 @@ namespace BlazorEcommerce.Client.Shared
 
         public void SearchProducts()
         {
-            NavigationManager!.NavigateTo($"search/{SearchText}", false);
+            NavigationManager!.NavigateTo($"search/{SearchText}/1", false);
         }
 
         public async Task HandleSearch(KeyboardEventArgs args)

@@ -4,6 +4,11 @@ namespace Shared.Dtos
 {
     public class ProductSearchResult
     {
+
+            public ProductSearchResult()
+            {
+                
+            }
             public ProductSearchResult(IEnumerable<Product> products, int currentPage, double pageCount)
             {
                 Products = products.ToList();

@@ -8,7 +8,11 @@ namespace Client.Services.Products
         List<Product> Products { get; set; }
         Task<List<Product>> GetProductsAsync(string? categoryUrl = null);
         Task<ServiceResponse<Product>> GetProductAsync(int productId);
-        Task<List<ProductSearchResult>> SearchProductsAsync(string searchText, int page);
+        Task<ProductSearchResult> SearchProductsAsync(string searchText, int page);
         Task<List<string>> GetProductSearchSuggestionsAsync(string searchText);
+        int CurrentPage { get; set; }
+        int PageCount { get; set; }
+        string LastSearchText { get; set; }
+
     }
 }

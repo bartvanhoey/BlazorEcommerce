@@ -9,7 +9,11 @@ public partial class ProductList
     [Parameter]
     public List<Product>? Products { get; set; }
 
-    protected string GetPriceText(Product product){
+    [Inject] protected IProductService? ProductService { get; set; }
+
+
+    protected string GetPriceText(Product product)
+    {
         var variants = product.Variants;
         if (variants.Count == 0)
         {

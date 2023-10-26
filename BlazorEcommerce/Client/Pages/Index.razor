@@ -1,6 +1,6 @@
 ﻿@page "/"
 @page "/{categoryUrl}"
-@page "/search/{searchText}"
+@page "/search/{searchText}/{page:int}"
 
 
 @inject IProductService ProductService
@@ -10,11 +10,11 @@
 
 @if (SearchText == null && CategoryUrl == null)
 {
-    <FeaturedProducts Products="@Products"/>
+    <FeaturedProducts Products="@Products" />
 }
 else
 {
-    <ProductList Products=@Products/>
+    <ProductList Products=@Products />
 }
 
 
@@ -25,6 +25,9 @@ else
     [Parameter]
     public string? SearchText { get; set; } = null;
 
+    [Parameter]
+    public int Page { get; set; }
+
 
     public List<Product> Products = new List<Product>();
 
@@ -33,7 +36,15 @@ else
 
         if (SearchText != null)
         {
-            Products = await ProductService.SearchProductsAsync(SearchText);
+            var result = await ProductService.SearchProductsAsync(SearchText, Page);
+            if (result.Products != null && result.Products.Count > 0)
+            {
+                Products = result.Products;
+            }
+            else
+            {
+                Products = new List<Product>();
+            }
         }
         else
         {
