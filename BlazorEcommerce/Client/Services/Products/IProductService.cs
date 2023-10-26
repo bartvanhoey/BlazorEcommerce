@@ -14,5 +14,7 @@ namespace Client.Services.Products
         int PageCount { get; set; }
         string LastSearchText { get; set; }
 
+        Task<Category> CreateCategoryAsync(Category Category);
+
     }
 }
