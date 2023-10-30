@@ -1,1 +1,24 @@
-<a href="cart" class="btn btn-info"><i class="oi oi-cart"><span class="badge">0</span></i></a>
+@inject ICartService CartService
+@inject ISyncLocalStorageService LocalStorage
+
+
+<a href="cart" class="btn btn-info"><i class="oi oi-cart"><span class="badge">@GetCartItemsCount()</span></i></a>
+
+@code {
+    private int GetCartItemsCount(){
+        var cart = LocalStorage.GetItem<List<CartItem>>("cart");
+        return cart == null ? 0 : cart.Count; 
+    }
+
+    protected override void OnInitialized() => CartService.OnChange += CartHasChanged;
+
+    public void Dispose() => CartService.OnChange -= CartHasChanged;
+
+
+    public void CartHasChanged(){
+        GetCartItemsCount();
+        StateHasChanged();
+    }
+
+
+}
