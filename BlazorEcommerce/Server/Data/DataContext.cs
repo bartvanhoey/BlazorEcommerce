@@ -3,9 +3,9 @@ using Shared;
 
 namespace Server.Data
 {
-    public class DataContext : DbContext
+    public class DatabaseContext : DbContext
     {
-        public DataContext(DbContextOptions<DataContext> options) : base(options)
+        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
 
         }

@@ -8,9 +8,9 @@ namespace Server.Services.Products
 {
     public class ProductService : IProductService
     {
-        private readonly DataContext _db;
+        private readonly DatabaseContext _db;
 
-        public ProductService(DataContext dataContext) => _db = dataContext;
+        public ProductService(DatabaseContext dataContext) => _db = dataContext;
 
         public async Task<ServiceResponse<List<Product>>> GetFeaturedProductsAsync()
         {

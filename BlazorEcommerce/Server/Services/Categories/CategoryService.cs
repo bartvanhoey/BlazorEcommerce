@@ -5,9 +5,9 @@ namespace Server.Services.Categories
 {
     public class CategoryService : ICategoryService
     {
-        private readonly DataContext _db;
+        private readonly DatabaseContext _db;
 
-        public CategoryService(DataContext context) => _db = context;
+        public CategoryService(DatabaseContext context) => _db = context;
 
         public async Task<ServiceResponse<List<Category>>> GetCategoriesAsync() => new ServiceResponse<List<Category>>() { Data = await _db.Categories.ToListAsync() };
 

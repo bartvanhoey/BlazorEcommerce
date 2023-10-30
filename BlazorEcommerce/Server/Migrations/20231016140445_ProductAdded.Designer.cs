@@ -10,7 +10,7 @@ using Server.Data;
 
 namespace BlazorEcommerce.Server.Migrations
 {
-    [DbContext(typeof(DataContext))]
+    [DbContext(typeof(DatabaseContext))]
     [Migration("20231016140445_ProductAdded")]
     partial class ProductAdded
     {
