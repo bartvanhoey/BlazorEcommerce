@@ -22,9 +22,9 @@ namespace Client.Services.Cart
         {
             var cart = await _localStorage.GetItemAsync<List<CartItem>>("cart") ?? new List<CartItem>();
             var sameItem = cart.FirstOrDefault(x => x.ProductId == cartItem.ProductId && x.ProductTypeId == cartItem.ProductTypeId);
-            if (sameItem == null) 
+            if (sameItem == null)
                 cart.Add(cartItem);
-            else 
+            else
                 sameItem.Quantity += cartItem.Quantity;
             await _localStorage.SetItemAsync("cart", cart);
             OnChange?.Invoke();
@@ -54,6 +54,18 @@ namespace Client.Services.Cart
             var response = await _httpClient.PostAsJsonAsync("api/cart/products", cartItems);
             var cartProducts = await response.Content.ReadFromJsonAsync<ServiceResponse<List<CartProductResponse>>>();
             return cartProducts.Data;
+        }
+
+        public async Task UpdateQuantityAsync(CartProductResponse product)
+        {
+            var cart = await _localStorage.GetItemAsync<List<CartItem>>("cart");
+            if (cart == null) return;
+
+            var cartItem = cart.Find(p => p.ProductId == product.ProductId && p.ProductTypeId == product.ProductTypeId);
+            if (cartItem == null) return;
+
+            cartItem.Quantity = product.Quantity;
+            await _localStorage.SetItemAsync("cart", cartItem);
         }
     }
 }

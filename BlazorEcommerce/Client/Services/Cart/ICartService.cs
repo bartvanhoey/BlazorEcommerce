@@ -7,5 +7,8 @@ namespace Client.Services.Cart
         Task<List<CartProductResponse>> GetCartProductsAsync();
         public event Action OnChange;
         Task DeleteProductFromCartAsync(int id, int productTypeId);
+        Task UpdateQuantityAsync(CartProductResponse cartProductResponse);
+
+
     }
 }
