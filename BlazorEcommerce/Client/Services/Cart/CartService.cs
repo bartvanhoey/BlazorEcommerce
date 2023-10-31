@@ -58,21 +58,14 @@ namespace Client.Services.Cart
 
         public async Task UpdateQuantityAsync(CartProductResponse product)
         {
-            try {
-                var cart = await _localStorage.GetItemAsync<List<CartItem>>("cart");
-                if (cart == null) return;
-    
-                var cartItem = cart.Find(p => p.ProductId == product.ProductId && p.ProductTypeId == product.ProductTypeId);
-                if (cartItem == null) return;
-    
-                cartItem.Quantity = product.Quantity;
-                await _localStorage.SetItemAsync("cart", cartItem);
-                OnChange?.Invoke();
-            } catch (Exception ex) {
-                
-                var msg = ex.Message;
+            var cart = await _localStorage.GetItemAsync<List<CartItem>>("cart");
+            if (cart == null) return;
 
-            }
+            var cartItem = cart.Find(p => p.ProductId == product.ProductId && p.ProductTypeId == product.ProductTypeId);
+            if (cartItem == null) return;
+
+            cartItem.Quantity = product.Quantity;
+            await _localStorage.SetItemAsync("cart", cart);
         }
     }
 }
