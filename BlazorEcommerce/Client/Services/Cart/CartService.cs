@@ -8,7 +8,13 @@ namespace Client.Services.Cart
     {
 
         private readonly ILocalStorageService _localStorage;
-        public CartService(ILocalStorageService localStorageService) => _localStorage = localStorageService;
+        private readonly HttpClient _httpClient;
+
+        public CartService(ILocalStorageService localStorageService, HttpClient httpClient)
+        {
+            _localStorage = localStorageService;
+            _httpClient = httpClient;
+        }
 
         public event Action OnChange;
 
@@ -22,5 +28,13 @@ namespace Client.Services.Cart
 
         public async Task<List<CartItem>> GetCartItemsAsync()
             => await _localStorage.GetItemAsync<List<CartItem>>("cart") ?? new List<CartItem>();
+
+        public async Task<List<CartProductResponse>> GetCartProductsAsync()
+        {
+            var cartItems = await _localStorage.GetItemAsync<List<CartItem>>("cart");
+            var response = await _httpClient.PostAsJsonAsync("api/cart/products", cartItems);
+            var cartProducts = await response.Content.ReadFromJsonAsync<ServiceResponse<List<CartProductResponse>>>();
+            return cartProducts.Data;
+        }
     }
 }

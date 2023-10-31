@@ -9,7 +9,7 @@ namespace Client.Services.Cart
     {
         Task AddToCartAsync(CartItem cartItem);
         Task<List<CartItem>> GetCartItemsAsync();
-
+        Task<List<CartProduct>> GetCartProductsAsync();
         public event Action OnChange;
     }
 }
