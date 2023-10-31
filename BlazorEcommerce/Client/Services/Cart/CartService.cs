@@ -16,7 +16,7 @@ namespace Client.Services.Cart
             _httpClient = httpClient;
         }
 
-        public event Action OnChange;
+        public event Action? OnChange;
 
         public async Task AddToCartAsync(CartItem cartItem)
         {
@@ -24,6 +24,20 @@ namespace Client.Services.Cart
             cart.Add(cartItem);
             await _localStorage.SetItemAsync("cart", cart);
             OnChange.Invoke();
+        }
+
+        public async Task DeleteProductFromCartAsync(int id, int productTypeId)
+        {
+            var cartItems = await _localStorage.GetItemAsync<List<CartItem>>("cart");
+            if (cartItems == null) return;
+
+            var cartItem = cartItems.Find(x => x.ProductId == id && x.ProductTypeId == productTypeId);
+            if (cartItem == null) return;
+            
+            if (cartItems.Remove(cartItem)){
+                 await _localStorage.SetItemAsync("cart", cartItems);
+                 OnChange?.Invoke();
+            }
         }
 
         public async Task<List<CartItem>> GetCartItemsAsync()

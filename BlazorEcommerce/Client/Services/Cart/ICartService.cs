@@ -6,5 +6,6 @@ namespace Client.Services.Cart
         Task<List<CartItem>> GetCartItemsAsync();
         Task<List<CartProductResponse>> GetCartProductsAsync();
         public event Action OnChange;
+        Task DeleteProductFromCartAsync(int id, int productTypeId);
     }
 }

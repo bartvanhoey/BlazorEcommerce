@@ -2,26 +2,31 @@ namespace BlazorEcommerce.Client.Pages
 {
     public class CartBase : ComponentBase
     {
-       protected List<CartProductResponse> CartProducts = new();
-       protected string Message = "Loading cart...";
-       
+        protected List<CartProductResponse> CartProducts = new();
+        protected string Message = "Loading cart...";
+
         [Inject] protected ICartService? CartService { get; set; }
 
+        protected override async Task OnInitializedAsync() => await LoadCartAsync();
 
-        protected override async Task OnInitializedAsync()
+        protected async Task RemoveProductFromCartAsync(int productId, int productTypeId)
         {
-            if ((await CartService!.GetCartItemsAsync()).Count==0)
+            await CartService!.DeleteProductFromCartAsync(productId, productTypeId);
+            await LoadCartAsync();
+        }
+
+        private async Task LoadCartAsync()
+        {
+            if ((await CartService!.GetCartItemsAsync()).Count == 0)
             {
-                Message= "Your cart is empty";
-                CartProducts = new List<CartProductResponse>();                
+                Message = "Your cart is empty";
+                CartProducts = new List<CartProductResponse>();
             }
             else
             {
                 CartProducts = await CartService.GetCartProductsAsync();
             }
         }
-
-
 
     }
 }

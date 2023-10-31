@@ -1,26 +1,36 @@
 .container {
-    display: flex;
-    padding: 6px;
+  display: flex;
+  padding: 6px;
 }
 
 .img-wrapper {
-    width: 150px;
-    text-align: center;
+  width: 150px;
+  text-align: center;
 }
 
-.image
-{
-    max-height: 150px;
-    max-width: 150px;
-    padding: 6px;
+.image {
+  max-height: 150px;
+  max-width: 150px;
+  padding: 6px;
 }
 
 .product-title {
-    flex-grow: 1;
-    padding: 6px;
+  flex-grow: 1;
+  padding: 6px;
 }
 
 .cart-product-price {
-    font-weight: 600 ;
-    text-align: right;
+  font-weight: 600;
+  text-align: right;
+}
+
+.btn-delete {
+  background: none;
+  border: 0;
+  padding: 0px;
+  color: red;
+  font-size: 12px;
+}
+.btn-delete:hover {
+  text-decoration: underline;
 }

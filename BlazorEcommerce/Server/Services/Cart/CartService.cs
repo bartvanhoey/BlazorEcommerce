@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Http.Features;
 using Server.Data;
 using Shared;
 
@@ -23,7 +22,7 @@ namespace Server.Services.Cart
                 if (product == null) continue;
 
                 var productVariant = await _dbContext.ProductVariants
-                            .Where(x => x.ProductId == item.ProductId && x.ProductTypeId == item.ProductTypeId).FirstOrDefaultAsync();
+                            .Where(x => x.ProductId == item.ProductId && x.ProductTypeId == item.ProductTypeId).Include(p => p.ProductType).FirstOrDefaultAsync();
                 if (productVariant == null) continue;
 
                 var cartProduct = new CartProductResponse()

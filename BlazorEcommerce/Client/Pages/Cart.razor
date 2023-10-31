@@ -21,7 +21,9 @@ else
             <div class="product-title">
                 <h5><a href="/product/@product.ProductId">@product.Title</a></h5>
                 <span>@product.ProductType</span>
-            </div>
+                <br>
+                <button class="btn btn-delete" 
+                    @onclick="@(() => RemoveProductFromCartAsync(product.ProductId, product.ProductTypeId))">Delete</button>            </div>
             <div class="cart-product-price">@product.Price</div>
         </div>
     }
