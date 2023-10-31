@@ -21,9 +21,13 @@ namespace Client.Services.Cart
         public async Task AddToCartAsync(CartItem cartItem)
         {
             var cart = await _localStorage.GetItemAsync<List<CartItem>>("cart") ?? new List<CartItem>();
-            cart.Add(cartItem);
+            var sameItem = cart.FirstOrDefault(x => x.ProductId == cartItem.ProductId && x.ProductTypeId == cartItem.ProductTypeId);
+            if (sameItem == null) 
+                cart.Add(cartItem);
+            else 
+                sameItem.Quantity += cartItem.Quantity;
             await _localStorage.SetItemAsync("cart", cart);
-            OnChange.Invoke();
+            OnChange?.Invoke();
         }
 
         public async Task DeleteProductFromCartAsync(int id, int productTypeId)
@@ -33,10 +37,11 @@ namespace Client.Services.Cart
 
             var cartItem = cartItems.Find(x => x.ProductId == id && x.ProductTypeId == productTypeId);
             if (cartItem == null) return;
-            
-            if (cartItems.Remove(cartItem)){
-                 await _localStorage.SetItemAsync("cart", cartItems);
-                 OnChange?.Invoke();
+
+            if (cartItems.Remove(cartItem))
+            {
+                await _localStorage.SetItemAsync("cart", cartItems);
+                OnChange?.Invoke();
             }
         }
 

@@ -32,7 +32,8 @@ namespace Server.Services.Cart
                     ImageUrl = product.ImageUrl,
                     Price = productVariant.Price,
                     ProductType = productVariant?.ProductType?.Name ?? string.Empty,
-                    ProductTypeId = productVariant?.ProductTypeId ?? 0
+                    ProductTypeId = productVariant?.ProductTypeId ?? 0,
+                    Quantity = item.Quantity
                 };
                 result.Data.Add(cartProduct);
             };
