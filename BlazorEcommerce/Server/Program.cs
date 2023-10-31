@@ -4,13 +4,15 @@ global using Server.Services.Categories;
 global using Server.Services.Products;
 
 using Server.Data;
+using Server.Services.Auth;
 using Server.Services.Cart;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddDbContext<DatabaseContext>(options => {
+builder.Services.AddDbContext<DatabaseContext>(options =>
+{
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
@@ -23,6 +25,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 app.UseSwaggerUI();
