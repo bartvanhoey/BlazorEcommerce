@@ -12,7 +12,7 @@
     private bool ShowUserMenu = false;
 
 
-    private string UserMenuCssClass => ShowUserMenu ? "show-menu" : null;
+    private string? UserMenuCssClass => ShowUserMenu ? "show-menu" : null;
 
     private void ToggleUserMenu() => ShowUserMenu = !ShowUserMenu;
 
