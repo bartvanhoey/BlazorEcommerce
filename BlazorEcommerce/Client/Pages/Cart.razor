@@ -22,13 +22,18 @@ else
                 <h5><a href="/product/@product.ProductId">@product.Title</a></h5>
                 <span>@product.ProductType</span>
                 <br>
+                
+                <input type="number" value="@product.Quantity" 
+                    @onchange="@((ChangeEventArgs e) => UpdateQuantityAsync(e, product))" 
+                    class="form-control input-quantity" min="1" />
+                
                 <button class="btn btn-delete" 
                     @onclick="@(() => RemoveProductFromCartAsync(product.ProductId, product.ProductTypeId))">Delete</button>            </div>
-            <div class="cart-product-price">@product.Price</div>
+            <div class="cart-product-price">$@(product.Price * product.Quantity)</div>
         </div>
     }
     <div class="cart-product-price" >
-        Total (@CartProducts.Count) : $@CartProducts.Sum(p => p.Price)
+        Total (@CartProducts.Count) : $@CartProducts.Sum(p => p.Price * p.Quantity)
     </div>
 </div>
 }

@@ -28,5 +28,12 @@ namespace BlazorEcommerce.Client.Pages
             }
         }
 
+        protected async Task UpdateQuantityAsync(ChangeEventArgs changeEventArgs, CartProductResponse product)
+        {
+            product.Quantity = int.Parse(changeEventArgs?.Value?.ToString() ?? "1");
+            if (product.Quantity < 1) product.Quantity = 1;
+            await CartService!.UpdateQuantityAsync(product);
+        }
+
     }
 }
