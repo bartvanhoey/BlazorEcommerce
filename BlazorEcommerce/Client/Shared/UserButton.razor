@@ -10,6 +10,8 @@
     <div class="dropdown-menu dropdown-menu-right @UserMenuCssClass">
         <AuthorizeView>
             <Authorized>
+                <a class="dropdown-item" href="profile">Profile</a>
+                <hr>
                 <button class="dropdown-item" @onclick="LogoutAsync">Logout</button>
             </Authorized>
             <NotAuthorized>
