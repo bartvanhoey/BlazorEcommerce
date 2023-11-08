@@ -9,12 +9,38 @@ namespace Server.Services.Auth
 
         public AuthService(DatabaseContext databaseContext) => _db = databaseContext;
 
-        public Task<ServiceResponse<int>> Register(User user, string password)
+        public async Task<ServiceResponse<int>> Register(User user, string password)
         {
-            throw new NotImplementedException();
+            if (await UserExists(user.Email))
+            {
+                return new ServiceResponse<int> { Success = false, Message = "Email already exists" };
+            }
+
+            var (passwordHash, passwordSalt) = CreatePasswordHash(password);
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+
+            _db.Users.Add(user);
+            await _db.SaveChangesAsync();
+
+            return new ServiceResponse<int> { Data = user.Id };
         }
 
-        public async Task<bool> UserExists(string email) 
+        private (byte[]? passwordHash, byte[]? passwordSalt) CreatePasswordHash(string password)
+        {
+            byte[]? passwordHash = null;
+            byte[]? passwordSalt = null;
+
+            using (var hmac = new System.Security.Cryptography.HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
+
+            return (passwordHash, passwordSalt);
+        }
+
+        public async Task<bool> UserExists(string email)
         => await _db.Users.AnyAsync(u => u.Email.ToLower() == email.ToLower());
     }
 
