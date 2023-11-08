@@ -5,17 +5,14 @@ namespace Client.Services.Auth
     {
         private readonly HttpClient _http;
 
-        public AuthService(HttpClient http)
-        {
-            _http = http;
-        }
+        public AuthService(HttpClient http) => _http = http;
 
-        public async Task<ServiceResponse<int>> RegisterAsync(UserRegisterModel model)
-        {
-            var response = await _http.PostAsJsonAsync("api/auth/register", model);
-            return await response.Content.ReadFromJsonAsync<ServiceResponse<int>>() ?? new ServiceResponse<int>() { Success = false, Message = "Something went wrong" };
-        }
+        public async Task<ServiceResponse<string>> LoginAsync(UserLoginModel model) 
+            => await (await _http.PostAsJsonAsync("api/auth/login", model)).Content.ReadFromJsonAsync<ServiceResponse<string>>()
+                ?? new ServiceResponse<string>() { Success = false, Message = "Login Failed" };
+
+        public async Task<ServiceResponse<int>> RegisterAsync(UserRegisterModel model) 
+        => await (await _http.PostAsJsonAsync("api/auth/register", model)).Content.ReadFromJsonAsync<ServiceResponse<int>>()
+                ?? new ServiceResponse<int>() { Success = false, Message = "Registration Failed" };
     }
-
-
 }
