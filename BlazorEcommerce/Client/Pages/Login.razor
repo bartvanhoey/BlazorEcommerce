@@ -1,0 +1,28 @@
+@page "/login"
+@inherits LoginBase
+
+<PageTitle>Login</PageTitle>
+
+
+<EditForm Model="@UserLoginModel" OnValidSubmit="HandleValidSubmitAsync">
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <label for="idEmail" class="form-label" >Email</label>
+        <div>
+            <InputText id="idEmail" class="form-control" @bind-Value="@UserLoginModel.Email" placeholder="PropertyName..." />
+            <ValidationMessage For="@(() => UserLoginModel.Email)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="idPassword">Password</label>
+        <div>
+            <InputText id="idPassword" class="form-control" @bind-Value="@UserLoginModel.Password" />
+            <ValidationMessage For="@(() => UserLoginModel.Password)" />
+        </div>
+    </div>
+    
+    <button class="btn btn-primary" type="submit">Login</button>
+</EditForm>
+
+

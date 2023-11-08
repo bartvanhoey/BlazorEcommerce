@@ -18,7 +18,6 @@
         <div class="mb-3">
             <label for="idPassword" class="form-label">Password</label>
             <div>
-
                 <InputText id="idPassword" class="form-control" @bind-Value="@UserRegisterModel.Password"
                     placeholder="Password..." type="password" />
                 <ValidationMessage For="@(() => UserRegisterModel.Password)" />
