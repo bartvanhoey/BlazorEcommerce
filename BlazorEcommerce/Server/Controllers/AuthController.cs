@@ -22,7 +22,7 @@ namespace Server.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<ServiceResponse<int>>> Register(UserRegisterModel model)
         {
-            var response = await _authService.Register(new User { Email = model.Email }, model.Password);
+            var response = await _authService.RegisterAsync(new User { Email = model.Email }, model.Password);
 
             if (!response.Success) return BadRequest(response);
             
@@ -32,7 +32,7 @@ namespace Server.Controllers
       [HttpPost("login")]
         public async Task<ActionResult<ServiceResponse<int>>> Login(UserLoginModel model)
         {
-            var response = await _authService.Login(model.Email, model.Password);
+            var response = await _authService.LoginAsync(model.Email, model.Password);
             if (!response.Success) return BadRequest(response);
             
             return Ok(response);

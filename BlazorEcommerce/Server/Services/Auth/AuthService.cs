@@ -18,7 +18,7 @@ namespace Server.Services.Auth
             _configuration = configuration;
         }
 
-        public async Task<ServiceResponse<int>> Register(User user, string password)
+        public async Task<ServiceResponse<int>> RegisterAsync(User user, string password)
         {
             if (await UserExists(user.Email))
             {
@@ -39,7 +39,7 @@ namespace Server.Services.Auth
         public async Task<bool> UserExists(string email)
         => await _db.Users.AnyAsync(u => u.Email.ToLower() == email.ToLower());
 
-        public async Task<ServiceResponse<string>> Login(string email, string password)
+        public async Task<ServiceResponse<string>> LoginAsync(string email, string password)
         {
             var response = new ServiceResponse<string>();
             var user = await _db.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower());
@@ -106,6 +106,25 @@ namespace Server.Services.Auth
             return (passwordHash, passwordSalt);
         }
 
+        public async Task<ServiceResponse<bool>> ChangePasswordAsync(int userId, string password)
+        {
+
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            if (user == null)
+            {
+                return new ServiceResponse<bool> { Success = false, Message = "User not found" };
+
+            }
+
+            var (passwordHash, passwordSalt) = CreatePasswordHash(password);
+
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+
+            await _db.SaveChangesAsync();
+
+            return new ServiceResponse<bool> { Data = true, Message = "Password changed!" };
+        }
     }
 
 }
