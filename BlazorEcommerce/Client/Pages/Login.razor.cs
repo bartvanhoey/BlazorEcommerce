@@ -12,6 +12,10 @@ namespace BlazorEcommerce.Client.Pages
 
         [Inject] public NavigationManager? NavigationManager { get; set; }
 
+        [Inject] protected AuthenticationStateProvider? AuthenticationStateProvider  { get; set; }
+
+        
+
         public string ErrorMessage { get; set; } = string.Empty;
 
         protected async void HandleValidSubmitAsync()
@@ -21,6 +25,7 @@ namespace BlazorEcommerce.Client.Pages
             {
                 ErrorMessage = string.Empty;
                 await LocalStorage!.SetItemAsync("authToken", result.Data);
+                await AuthenticationStateProvider?.GetAuthenticationStateAsync()!;
                 NavigationManager!.NavigateTo("/");
             }
             else
