@@ -9,8 +9,13 @@ namespace BlazorEcommerce.Client.Pages
     {
         protected UserRegisterModel UserRegisterModel = new();
 
-        protected void HandleValidSubmitAsync(){
-            Console.WriteLine($"Register User: {UserRegisterModel.Email}");
+        [Inject] protected IAuthService? AuthService { get; set; }
+
+        public string ErrorMessage { get; set; }  = string.Empty;
+
+        protected async void HandleValidSubmitAsync(){
+           var result =  await AuthService!.RegisterAsync(UserRegisterModel);
+           ErrorMessage = result.Success ? string.Empty : result.Message;
         }
     }
 }

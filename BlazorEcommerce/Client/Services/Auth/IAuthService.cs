@@ -7,6 +7,6 @@ namespace Client.Services.Auth
 {
     public interface IAuthService
     {
-        Task<ServiceResponse<int>> Register(UserRegisterModel model);
+        Task<ServiceResponse<int>> RegisterAsync(UserRegisterModel model);
     }
 }
