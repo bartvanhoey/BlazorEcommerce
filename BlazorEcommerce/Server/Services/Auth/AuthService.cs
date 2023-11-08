@@ -108,13 +108,8 @@ namespace Server.Services.Auth
 
         public async Task<ServiceResponse<bool>> ChangePasswordAsync(int userId, string password)
         {
-
             var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == userId);
-            if (user == null)
-            {
-                return new ServiceResponse<bool> { Success = false, Message = "User not found" };
-
-            }
+            if (user == null) return new ServiceResponse<bool> { Success = false, Message = "User not found" };
 
             var (passwordHash, passwordSalt) = CreatePasswordHash(password);
 
