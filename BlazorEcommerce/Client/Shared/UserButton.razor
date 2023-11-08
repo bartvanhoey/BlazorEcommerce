@@ -13,7 +13,7 @@
                 <button class="dropdown-item" @onclick="LogoutAsync">Logout</button>
             </Authorized>
             <NotAuthorized>
-                <a class="dropdown-item" href="login">Login</a>
+                <a class="dropdown-item" href="login?returnUrl=@NavigationManager.ToBaseRelativePath(NavigationManager.Uri)">Login</a>
                 <a class="dropdown-item" href="register">Register</a>
             </NotAuthorized>
         </AuthorizeView>

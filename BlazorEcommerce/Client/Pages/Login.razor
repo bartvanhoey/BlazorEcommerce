@@ -1,8 +1,6 @@
 @page "/login"
 @inherits LoginBase
 
-yinjelo
-
 <PageTitle>Login</PageTitle>
 
 
@@ -19,7 +17,7 @@ yinjelo
     <div class="mb-3">
         <label for="idPassword">Password</label>
         <div>
-            <InputText id="idPassword" class="form-control" @bind-Value="@UserLoginModel.Password" />
+            <InputText id="idPassword" type="password" class="form-control" @bind-Value="@UserLoginModel.Password" placeholder="Password..." />
             <ValidationMessage For="@(() => UserLoginModel.Password)" />
         </div>
     </div>
