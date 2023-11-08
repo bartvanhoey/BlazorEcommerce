@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.Components.Authorization;
 
 namespace BlazorEcommerce.Client
 {
-    public class CustomAuthStateProvider : AuthenticationStateProvider
+    public class CustomAuthenticationStateProvider : AuthenticationStateProvider
     {
         private readonly ILocalStorageService _localStorage;
         private readonly HttpClient _http;
 
-        public CustomAuthStateProvider(ILocalStorageService localStorage, HttpClient httpClient)
+        public CustomAuthenticationStateProvider(ILocalStorageService localStorage, HttpClient httpClient)
         {
             _localStorage = localStorage;
             _http = httpClient;
