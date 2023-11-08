@@ -42,6 +42,16 @@ namespace Server.Services.Auth
 
         public async Task<bool> UserExists(string email)
         => await _db.Users.AnyAsync(u => u.Email.ToLower() == email.ToLower());
+
+        public async Task<ServiceResponse<string>> Login(string email, string password)
+        {
+            var response = new ServiceResponse<string>{
+                Data = "token"
+            };
+
+            await Task.CompletedTask;
+            return response;
+        }
     }
 
 }

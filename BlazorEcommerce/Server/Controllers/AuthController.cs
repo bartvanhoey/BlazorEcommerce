@@ -29,6 +29,14 @@ namespace Server.Controllers
             return Ok(response);
         }
 
+      [HttpPost("login")]
+        public async Task<ActionResult<ServiceResponse<int>>> Login(UserLoginModel model)
+        {
+            var response = await _authService.Login(model.Email, model.Password);
+            if (!response.Success) return BadRequest(response);
+            
+            return Ok(response);
+        }
 
     }
 }
