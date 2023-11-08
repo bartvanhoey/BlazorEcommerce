@@ -1,3 +1,7 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
 using Server.Data;
 using Shared;
 
@@ -6,8 +10,13 @@ namespace Server.Services.Auth
     public class AuthService : IAuthService
     {
         private readonly DatabaseContext _db;
+        private readonly IConfiguration _configuration;
 
-        public AuthService(DatabaseContext databaseContext) => _db = databaseContext;
+        public AuthService(DatabaseContext databaseContext, IConfiguration configuration)
+        {
+            _db = databaseContext;
+            _configuration = configuration;
+        }
 
         public async Task<ServiceResponse<int>> Register(User user, string password)
         {
@@ -33,32 +42,53 @@ namespace Server.Services.Auth
         public async Task<ServiceResponse<string>> Login(string email, string password)
         {
             var response = new ServiceResponse<string>();
-            response.Data = "token";
-
             var user = await _db.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower());
-
             if (user == null)
             {
                 response.Success = false;
                 response.Message = "User not found";
             }
-            else if (IsPasswordNotCorrect(password, user.PasswordHash, user.PasswordSalt))
+            else if (IsPasswordCorrect(password, user.PasswordHash, user.PasswordSalt))
             {
-
+                response.Data = CreateToken(user);
+            }
+            else
+            {
+                response.Success = false;
+                response.Message = "wrong password";
             }
 
-            await Task.CompletedTask;
+
             return response;
         }
 
-        private bool IsPasswordNotCorrect(string? password, byte[]? passwordHash, byte[]? passwordSalt)
+        private string? CreateToken(User user)
+        {
+            List<Claim> claims = new()
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Email)
+            };
+
+            var appSettingsToken = _configuration.GetSection("AppSettings:Token")?.Value;
+            if (appSettingsToken == null) return string.Empty;
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appSettingsToken));
+
+            var signingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+            var jwToken = new JwtSecurityToken(claims: claims, expires: DateTime.Now.AddDays(1), signingCredentials: signingCredentials);
+
+            return new JwtSecurityTokenHandler().WriteToken(jwToken);
+        }
+
+        private bool IsPasswordCorrect(string? password, byte[]? passwordHash, byte[]? passwordSalt)
         {
             if (password == null) return false;
             if (passwordHash == null) return false;
             if (passwordSalt == null) return false;
 
             using var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt);
-            var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
             return computedHash.SequenceEqual(passwordHash);
         }
 
