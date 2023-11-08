@@ -23,7 +23,7 @@ namespace Server.Services.Auth
             _db.Users.Add(user);
             await _db.SaveChangesAsync();
 
-            return new ServiceResponse<int> { Data = user.Id };
+            return new ServiceResponse<int> { Data = user.Id, Message = "Registration Successful!" };
         }
 
         private (byte[]? passwordHash, byte[]? passwordSalt) CreatePasswordHash(string password)

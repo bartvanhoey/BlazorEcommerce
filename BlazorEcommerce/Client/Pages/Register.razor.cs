@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace BlazorEcommerce.Client.Pages
 {
     public class RegisterBase : ComponentBase
@@ -11,11 +6,15 @@ namespace BlazorEcommerce.Client.Pages
 
         [Inject] protected IAuthService? AuthService { get; set; }
 
-        public string ErrorMessage { get; set; }  = string.Empty;
+        public string Message { get; set; } = string.Empty;
+        public string MessageCssClass { get; set; } = string.Empty;
 
-        protected async void HandleValidSubmitAsync(){
-           var result =  await AuthService!.RegisterAsync(UserRegisterModel);
-           ErrorMessage = result.Success ? string.Empty : result.Message;
+        protected async void HandleValidSubmitAsync()
+        {
+            var result = await AuthService!.RegisterAsync(UserRegisterModel);
+            Message = result.Message;
+            MessageCssClass = result.Success ? "text-success" : "text-danger";
+            StateHasChanged();
         }
     }
 }
