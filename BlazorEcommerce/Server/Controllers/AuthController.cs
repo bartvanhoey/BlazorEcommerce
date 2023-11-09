@@ -42,9 +42,9 @@ namespace Server.Controllers
 
         
         [HttpPost("change-password"), Authorize]
-        public async Task<ActionResult<ServiceResponse<bool>>> ChangePassword(string password)
+        public async Task<ActionResult<ServiceResponse<bool>>> ChangePassword(UserChangePasswordModel model)
         {
-            var response = await _authService.ChangePasswordAsync(int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)), password);
+            var response = await _authService.ChangePasswordAsync(int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),model.Password);
             if (!response.Success) return BadRequest(response);
             return Ok(response);
         }

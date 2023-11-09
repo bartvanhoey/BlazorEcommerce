@@ -6,9 +6,13 @@ namespace Client.Services.Auth
 
         public AuthService(HttpClient http) => _http = http;
 
-        public async Task<ServiceResponse<bool>> ChangePassword(UserChangePasswordModel model)
-        => await (await _http.PostAsJsonAsync("api/auth/change-password", model.Password)).Content.ReadFromJsonAsync<ServiceResponse<bool>>()
-            ?? new ServiceResponse<bool>() { Success = false, Message = "Login Failed" };
+        public async Task<ServiceResponse<bool>> ChangePasswordAsync(UserChangePasswordModel model)
+        {
+            var response = await _http.PostAsJsonAsync("api/auth/change-password", model);
+            return await response.Content
+                       .ReadFromJsonAsync<ServiceResponse<bool>>()
+                   ?? new ServiceResponse<bool>() { Success = false, Message = "Change Password Failed" };
+        }
 
         public async Task<ServiceResponse<string>> LoginAsync(UserLoginModel model)
             => await (await _http.PostAsJsonAsync("api/auth/login", model)).Content.ReadFromJsonAsync<ServiceResponse<string>>()
