@@ -1,3 +1,4 @@
+using System.Security.Authentication;
 using System.Security.Claims;
 using Server.Data;
 using Shared;
@@ -9,7 +10,7 @@ namespace Server.Services.Cart
         private readonly DatabaseContext _dbContext;
         private readonly IHttpContextAccessor _accessor;
 
-        public CartService(DatabaseContext dbContext, IHttpContextAccessor accessor) 
+        public CartService(DatabaseContext dbContext, IHttpContextAccessor accessor)
         {
             _dbContext = dbContext;
             _accessor = accessor;
@@ -46,9 +47,15 @@ namespace Server.Services.Cart
             return result;
         }
 
+        public async Task<ServiceResponse<int>> GetCartItemsCount()
+        {
+            var count = (await _dbContext.CartItems.Where(ci => ci.UserId == GetUserId()).ToListAsync()).Count;
+            return new ServiceResponse<int> { Data = count };
+        }
+
         public async Task<ServiceResponse<List<CartProductResponse>>> StoreCartAsync(List<CartItem> cartItems)
         {
-            var userId = GetUserId(); 
+            var userId = GetUserId();
             cartItems.ForEach(ci => ci.UserId = userId);
             _dbContext.CartItems.AddRange(cartItems);
             await _dbContext.SaveChangesAsync();
@@ -56,7 +63,7 @@ namespace Server.Services.Cart
                 await _dbContext.CartItems.Where(ci => ci.UserId == userId).ToListAsync());
         }
 
-        private int GetUserId() 
+        private int GetUserId()
             => int.Parse(_accessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier) ?? "-1");
 
     }

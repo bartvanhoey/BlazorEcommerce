@@ -26,5 +26,10 @@ namespace Server.Controllers
             var result = await _cartService.StoreCartAsync(cartItems);
             return Ok(result);
         }
+
+
+        [HttpGet("count")]
+        public async Task<ActionResult<ServiceResponse<int>>> GetCartItemsCount() 
+            => await _cartService.GetCartItemsCount();
     }
 }

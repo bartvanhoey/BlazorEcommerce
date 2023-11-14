@@ -6,6 +6,7 @@ namespace Server.Services.Cart
     {
         Task<ServiceResponse<List<CartProductResponse>>> GetCartAsync(List<CartItem> cartItems);
         Task<ServiceResponse<List<CartProductResponse>>> StoreCartAsync(List<CartItem> cartItems);
+            Task<ServiceResponse<int>> GetCartItemsCount();
     }
 
 }

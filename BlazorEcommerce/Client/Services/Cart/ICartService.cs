@@ -9,7 +9,8 @@ namespace Client.Services.Cart
         Task DeleteProductFromCartAsync(int id, int productTypeId);
         Task UpdateQuantityAsync(CartProductResponse cartProductResponse);
 
-    Task StoreCartItemsAsync(bool emptyLocalCart);
+        Task StoreCartItemsAsync(bool emptyLocalCart);
+    
 
 
     }

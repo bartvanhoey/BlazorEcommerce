@@ -59,6 +59,7 @@ namespace Client.Services.Cart
         public async Task<List<CartItem>> GetCartItemsAsync()
             => await _localStorage.GetItemAsync<List<CartItem>>("cart") ?? new List<CartItem>();
 
+
         public async Task<List<CartProductResponse>> GetCartProductsAsync()
         {
             var cartItems = await _localStorage.GetItemAsync<List<CartItem>>("cart");
