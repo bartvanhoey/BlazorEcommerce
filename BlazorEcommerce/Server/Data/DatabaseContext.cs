@@ -15,26 +15,27 @@ namespace Server.Data
         public DbSet<ProductType> ProductTypes { get; set; }
         public DbSet<ProductVariant> ProductVariants { get; set; }
         public DbSet<User> Users { get; set; }
-
-
+        public DbSet<CartItem> CartItems { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<CartItem>().HasKey(ci => new { ci.ProductId, ci.ProductTypeId, ci.UserId });
+
             modelBuilder.Entity<ProductVariant>().HasKey(p => new { p.ProductId, p.ProductTypeId });
 
-              modelBuilder.Entity<ProductType>().HasData(
-                    new ProductType { Id = 1, Name = "Default" },
-                    new ProductType { Id = 2, Name = "Paperback" },
-                    new ProductType { Id = 3, Name = "E-Book" },
-                    new ProductType { Id = 4, Name = "Audiobook" },
-                    new ProductType { Id = 5, Name = "Stream" },
-                    new ProductType { Id = 6, Name = "Blu-ray" },
-                    new ProductType { Id = 7, Name = "VHS" },
-                    new ProductType { Id = 8, Name = "PC" },
-                    new ProductType { Id = 9, Name = "PlayStation" },
-                    new ProductType { Id = 10, Name = "Xbox" }
-                );
+            modelBuilder.Entity<ProductType>().HasData(
+                  new ProductType { Id = 1, Name = "Default" },
+                  new ProductType { Id = 2, Name = "Paperback" },
+                  new ProductType { Id = 3, Name = "E-Book" },
+                  new ProductType { Id = 4, Name = "Audiobook" },
+                  new ProductType { Id = 5, Name = "Stream" },
+                  new ProductType { Id = 6, Name = "Blu-ray" },
+                  new ProductType { Id = 7, Name = "VHS" },
+                  new ProductType { Id = 8, Name = "PC" },
+                  new ProductType { Id = 9, Name = "PlayStation" },
+                  new ProductType { Id = 10, Name = "Xbox" }
+              );
 
             modelBuilder.Entity<Category>().HasData(
                 new Category
@@ -100,7 +101,7 @@ namespace Server.Data
                         Title = "Back to the Future",
                         Description = "Back to the Future is a 1985 American science fiction film directed by Robert Zemeckis. Written by Zemeckis and Bob Gale, it stars Michael J. Fox, Christopher Lloyd, Lea Thompson, Crispin Glover, and Thomas F. Wilson. Set in 1985, the story follows Marty McFly (Fox), a teenager accidentally sent back to 1955 in a time-traveling DeLorean automobile built by his eccentric scientist friend Doctor Emmett \"Doc\" Brown (Lloyd). Trapped in the past, Marty inadvertently prevents his future parents' meeting—threatening his very existence—and is forced to reconcile the pair and somehow get back to the future.",
                         ImageUrl = "https://upload.wikimedia.org/wikipedia/en/d/d2/Back_to_the_Future.jpg",
-                        Featured =true
+                        Featured = true
                     },
                     new Product
                     {
