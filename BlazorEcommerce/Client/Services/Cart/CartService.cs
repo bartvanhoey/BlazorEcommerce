@@ -67,6 +67,23 @@ namespace Client.Services.Cart
             return cartProducts?.Data ?? new List<CartProductResponse>();
         }
 
+        public async Task StoreCartItemsAsync(bool emptyLocalCart = false)
+        {
+            var cartItems = await _localStorage.GetItemAsync<List<CartItem>>("cart");
+            if (cartItems == null) return;
+
+            await _httpClient.PostAsJsonAsync("api/cart", cartItems);
+
+            if (emptyLocalCart)
+            {
+                await _localStorage.RemoveItemAsync("cart");
+            }
+
+
+
+
+        }
+
         public async Task UpdateQuantityAsync(CartProductResponse product)
         {
             var cart = await _localStorage.GetItemAsync<List<CartItem>>("cart");

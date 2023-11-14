@@ -39,5 +39,14 @@ namespace Server.Services.Cart
             };
             return result;
         }
+
+        public async Task<ServiceResponse<List<CartProductResponse>>> StoreCartAsync(List<CartItem> cartItems, int userId)
+        {
+            cartItems.ForEach(ci => ci.UserId = userId);
+            _dbContext.CartItems.AddRange(cartItems);
+            await _dbContext.SaveChangesAsync();
+            return await GetCartAsync(
+                await _dbContext.CartItems.Where(ci => ci.UserId == userId).ToListAsync());
+        }
     }
 }

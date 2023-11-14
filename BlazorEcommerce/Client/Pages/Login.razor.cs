@@ -11,6 +11,8 @@ namespace BlazorEcommerce.Client.Pages
 
         [Inject] protected IAuthService? AuthService { get; set; }
 
+        [Inject] protected ICartService? CartService { get; set; }
+
         [Inject] public NavigationManager? NavigationManager { get; set; }
 
         [Inject] protected AuthenticationStateProvider? AuthenticationStateProvider  { get; set; }
@@ -27,6 +29,7 @@ namespace BlazorEcommerce.Client.Pages
                 ErrorMessage = string.Empty;
                 await LocalStorage!.SetItemAsync("authToken", result.Data);
                 await AuthenticationStateProvider?.GetAuthenticationStateAsync()!;
+                await CartService!.StoreCartItemsAsync(true);
                 NavigationManager!.NavigateTo(ReturnUrl);
             }
             else
