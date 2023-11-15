@@ -39,9 +39,9 @@ namespace Client.Services.Cart
                 cart.Add(cartItem);
             else
                 sameItem.Quantity += cartItem.Quantity;
-            await _localStorage.SetItemAsync("cart", cart);
+                await _localStorage.SetItemAsync("cart", cart);
             // OnChange?.Invoke();
-            await GetCartItemsAsync();  
+            await GetCartItemsCountAsync();  
         }
 
         private async Task<bool> IsUserAuthenticatedAsync() => (await _authenticationStateProvider.GetAuthenticationStateAsync()).User.Identity?.IsAuthenticated ?? false;
@@ -62,16 +62,16 @@ namespace Client.Services.Cart
             }
         }
 
-        public async Task<List<CartItem>> GetCartItemsAsync()
-        {
-            await GetCartItemsCountAsync();
-            return await _localStorage.GetItemAsync<List<CartItem>>("cart") ?? new List<CartItem>();
-            
-        }
-
         public async Task<List<CartProductResponse>> GetCartProductsAsync()
         {
+            if (await IsUserAuthenticatedAsync())
+            {
+                return (await _httpClient.GetFromJsonAsync<ServiceResponse<List<CartProductResponse>>>("api/cart"))?.Data ?? new List<CartProductResponse>();
+            }
+
             var cartItems = await _localStorage.GetItemAsync<List<CartItem>>("cart");
+            if (cartItems == null) return new List<CartProductResponse>();
+            
             var response = await _httpClient.PostAsJsonAsync("api/cart/products", cartItems);
             var cartProducts = await response.Content.ReadFromJsonAsync<ServiceResponse<List<CartProductResponse>>>();
             return cartProducts?.Data ?? new List<CartProductResponse>();

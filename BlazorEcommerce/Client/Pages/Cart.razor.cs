@@ -17,7 +17,10 @@ namespace BlazorEcommerce.Client.Pages
 
         private async Task LoadCartAsync()
         {
-            if ((await CartService!.GetCartItemsAsync()).Count == 0)
+            await CartService!.GetCartItemsCountAsync();
+            CartProducts = await CartService!.GetCartProductsAsync();
+
+            if (CartProducts == null || CartProducts.Count == 0)
             {
                 Message = "Your cart is empty";
                 CartProducts = new List<CartProductResponse>();

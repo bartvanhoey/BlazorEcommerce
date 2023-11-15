@@ -12,7 +12,8 @@
     public void Dispose() => CartService.OnChange -= CartHasChanged;
 
 
-    public void CartHasChanged(){
+    public void CartHasChanged()
+    {
         GetCartItemsCount();
         StateHasChanged();
     }
