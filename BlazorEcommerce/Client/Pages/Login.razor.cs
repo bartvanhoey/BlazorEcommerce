@@ -30,6 +30,7 @@ namespace BlazorEcommerce.Client.Pages
                 await LocalStorage!.SetItemAsync("authToken", result.Data);
                 await AuthenticationStateProvider?.GetAuthenticationStateAsync()!;
                 await CartService!.StoreCartItemsAsync(true);
+                await CartService!.GetCartItemsCountAsync();
                 NavigationManager!.NavigateTo(ReturnUrl);
             }
             else
