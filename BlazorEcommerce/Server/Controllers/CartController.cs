@@ -16,7 +16,7 @@ namespace Server.Controllers
         [HttpPost("products")]
         public async Task<ActionResult<ServiceResponse<List<CartProductResponse>>>> GetCartProducts(List<CartItem> cartItems)
         {
-            var result = await _cartService.GetCartAsync(cartItems);
+            var result = await _cartService.GetCartProductsAsync(cartItems);
             return Ok(result);
         }
 
@@ -29,7 +29,12 @@ namespace Server.Controllers
 
 
         [HttpGet("count")]
-        public async Task<ActionResult<ServiceResponse<int>>> GetCartItemsCount() 
-            => await _cartService.GetCartItemsCount();
+        public async Task<ActionResult<ServiceResponse<int>>> GetCartItemsCount()
+            => await _cartService.GetCartItemsCountAsync();
+
+        [HttpGet]
+        public async Task<ActionResult<ServiceResponse<List<CartProductResponse>>>> GetDbCartProducts()
+            => Ok(await _cartService.GetDbCartProductsAsync());
+
     }
 }

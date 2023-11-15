@@ -1,4 +1,3 @@
-using System.Security.Authentication;
 using System.Security.Claims;
 using Server.Data;
 using Shared;
@@ -16,7 +15,7 @@ namespace Server.Services.Cart
             _accessor = accessor;
         }
 
-        public async Task<ServiceResponse<List<CartProductResponse>>> GetCartAsync(List<CartItem> cartItems)
+        public async Task<ServiceResponse<List<CartProductResponse>>> GetCartProductsAsync(List<CartItem> cartItems)
         {
             var result = new ServiceResponse<List<CartProductResponse>>
             {
@@ -47,11 +46,14 @@ namespace Server.Services.Cart
             return result;
         }
 
-        public async Task<ServiceResponse<int>> GetCartItemsCount()
+        public async Task<ServiceResponse<int>> GetCartItemsCountAsync()
         {
             var count = (await _dbContext.CartItems.Where(ci => ci.UserId == GetUserId()).ToListAsync()).Count;
             return new ServiceResponse<int> { Data = count };
         }
+
+        public async Task<ServiceResponse<List<CartProductResponse>>> GetDbCartProductsAsync() 
+            => await GetCartProductsAsync(await _dbContext.CartItems.Where(x => x.UserId == GetUserId()).ToListAsync());
 
         public async Task<ServiceResponse<List<CartProductResponse>>> StoreCartAsync(List<CartItem> cartItems)
         {
@@ -59,12 +61,15 @@ namespace Server.Services.Cart
             cartItems.ForEach(ci => ci.UserId = userId);
             _dbContext.CartItems.AddRange(cartItems);
             await _dbContext.SaveChangesAsync();
-            return await GetCartAsync(
-                await _dbContext.CartItems.Where(ci => ci.UserId == userId).ToListAsync());
+            return await GetDbCartProductsAsync(); 
         }
 
         private int GetUserId()
             => int.Parse(_accessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier) ?? "-1");
+
+
+
+
 
     }
 }
