@@ -19,10 +19,12 @@ namespace Client.Services.Cart
 
         public event Action? OnChange;
 
+
+
+
         public async Task AddToCartAsync(CartItem cartItem)
         {
-            var isUserAuthenticated = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User.Identity?.IsAuthenticated ?? false; ;
-            if (isUserAuthenticated)
+            if (await IsUserAuthenticated())
             {
                 Console.WriteLine("User already authenticated");
             }
@@ -40,6 +42,8 @@ namespace Client.Services.Cart
             await _localStorage.SetItemAsync("cart", cart);
             OnChange?.Invoke();
         }
+
+        private async Task<bool> IsUserAuthenticated() => (await _authenticationStateProvider.GetAuthenticationStateAsync()).User.Identity?.IsAuthenticated ?? false;
 
         public async Task DeleteProductFromCartAsync(int id, int productTypeId)
         {
