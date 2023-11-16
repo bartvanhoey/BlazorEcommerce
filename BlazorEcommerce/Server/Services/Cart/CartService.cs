@@ -52,7 +52,7 @@ namespace Server.Services.Cart
             return new ServiceResponse<int> { Data = count };
         }
 
-        public async Task<ServiceResponse<List<CartProductResponse>>> GetDbCartProductsAsync() 
+        public async Task<ServiceResponse<List<CartProductResponse>>> GetDbCartProductsAsync()
             => await GetCartProductsAsync(await _dbContext.CartItems.Where(x => x.UserId == GetUserId()).ToListAsync());
 
         public async Task<ServiceResponse<List<CartProductResponse>>> StoreCartAsync(List<CartItem> cartItems)
@@ -61,15 +61,36 @@ namespace Server.Services.Cart
             cartItems.ForEach(ci => ci.UserId = userId);
             _dbContext.CartItems.AddRange(cartItems);
             await _dbContext.SaveChangesAsync();
-            return await GetDbCartProductsAsync(); 
+            return await GetDbCartProductsAsync();
         }
 
         private int GetUserId()
             => int.Parse(_accessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier) ?? "-1");
 
+        public async Task<ServiceResponse<bool>> AddToCartAsync(CartItem cartItem)
+        {
+            cartItem.UserId = GetUserId();
+            var sameItem = await _dbContext.CartItems.FirstOrDefaultAsync(c => c.ProductId == cartItem.ProductId
+                        && c.ProductTypeId == cartItem.ProductTypeId
+                        && c.UserId == cartItem.UserId);
+
+            if (sameItem == null)
+            {
+                _dbContext.CartItems.Add(cartItem);
+            }
+            else
+            {
+                sameItem.Quantity += cartItem.Quantity;
+            }
+
+            await _dbContext.SaveChangesAsync();
+
+            return new ServiceResponse<bool> { Data = true };
 
 
 
 
+
+        }
     }
 }
