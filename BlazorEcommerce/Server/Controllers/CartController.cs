@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Server.Services.Cart;
 using Shared;
@@ -27,7 +26,14 @@ namespace Server.Controllers
             return Ok(result);
         }
 
-        [HttpPost("add")]
+        [HttpPut("update-quantity")]
+        public async Task<ActionResult<ServiceResponse<bool>>> UpdateQuantity(CartItem cartItem)
+        {
+            var result = await _cartService.UpdateQuantityAsync(cartItem);
+            return Ok(result);
+        }
+
+        [HttpPut("add")]
         public async Task<ActionResult<ServiceResponse<bool>>> AddToCart(CartItem cartItem)
         {
             var result = await _cartService.AddToCartAsync(cartItem);

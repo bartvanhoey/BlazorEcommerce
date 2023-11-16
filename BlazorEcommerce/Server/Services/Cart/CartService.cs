@@ -86,11 +86,18 @@ namespace Server.Services.Cart
             await _dbContext.SaveChangesAsync();
 
             return new ServiceResponse<bool> { Data = true };
+        }
 
+        public async Task<ServiceResponse<bool>> UpdateQuantityAsync(CartItem cartItem)
+        {
+            var dbCartItem = await _dbContext.CartItems.FirstOrDefaultAsync(c => c.ProductId == cartItem.ProductId
+                        && c.ProductTypeId == cartItem.ProductTypeId
+                        && c.UserId == GetUserId());
 
-
-
-
+            if (dbCartItem == null) return new ServiceResponse<bool> { Data = false, Message = "Cart item does not exist", Success = false }; ;
+            dbCartItem.Quantity = cartItem.Quantity;
+            await _dbContext.SaveChangesAsync();
+            return new ServiceResponse<bool> { Data = true };
         }
     }
 }

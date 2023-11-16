@@ -56,7 +56,7 @@ namespace Client.Services.Cart
             if (cartItems.Remove(cartItem))
             {
                 await _localStorage.SetItemAsync("cart", cartItems);
-              
+
                 await GetCartItemsCountAsync();
             }
         }
@@ -95,14 +95,22 @@ namespace Client.Services.Cart
 
         public async Task UpdateQuantityAsync(CartProductResponse product)
         {
-            var cart = await _localStorage.GetItemAsync<List<CartItem>>("cart");
-            if (cart == null) return;
+            if (await IsUserAuthenticatedAsync())
+            {
+                var request = new CartItem { ProductId = product.ProductId, Quantity = product.Quantity, ProductTypeId = product.ProductTypeId };
+                var response = await _httpClient.PutAsJsonAsync("api/cart/update-quantity", request);
+            }
+            else
+            {
+                var cart = await _localStorage.GetItemAsync<List<CartItem>>("cart");
+                if (cart == null) return;
 
-            var cartItem = cart.Find(p => p.ProductId == product.ProductId && p.ProductTypeId == product.ProductTypeId);
-            if (cartItem == null) return;
+                var cartItem = cart.Find(p => p.ProductId == product.ProductId && p.ProductTypeId == product.ProductTypeId);
+                if (cartItem == null) return;
 
-            cartItem.Quantity = product.Quantity;
-            await _localStorage.SetItemAsync("cart", cart);
+                cartItem.Quantity = product.Quantity;
+                await _localStorage.SetItemAsync("cart", cart);
+            }
         }
 
         public async Task GetCartItemsCountAsync()
