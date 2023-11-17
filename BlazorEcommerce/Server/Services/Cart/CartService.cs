@@ -94,10 +94,24 @@ namespace Server.Services.Cart
                         && c.ProductTypeId == cartItem.ProductTypeId
                         && c.UserId == GetUserId());
 
-            if (dbCartItem == null) return new ServiceResponse<bool> { Data = false, Message = "Cart item does not exist", Success = false }; ;
+            if (dbCartItem == null) return new ServiceResponse<bool> { Data = false, Message = "Cart item does not exist", Success = false };
             dbCartItem.Quantity = cartItem.Quantity;
             await _dbContext.SaveChangesAsync();
             return new ServiceResponse<bool> { Data = true };
+        }
+
+        public async Task<ServiceResponse<bool>> RemoveItemFromCartAsync(int productId, int productTypeId)
+        {
+            var dbCartItem = await _dbContext.CartItems.FirstOrDefaultAsync(c => c.ProductId == productId
+                                    && c.ProductTypeId == productTypeId && c.UserId == GetUserId());
+
+            if (dbCartItem == null) return new ServiceResponse<bool> { Data = false, Message = "Cart item does not exist", Success = false };
+
+            _dbContext.CartItems.Remove(dbCartItem);
+            await _dbContext.SaveChangesAsync();
+
+            return new ServiceResponse<bool> { Data = true };
+
         }
     }
 }

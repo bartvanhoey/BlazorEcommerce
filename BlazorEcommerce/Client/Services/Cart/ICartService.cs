@@ -5,7 +5,7 @@ namespace Client.Services.Cart
         Task AddToCartAsync(CartItem cartItem);
         Task<List<CartProductResponse>> GetCartProductsAsync();
         public event Action OnChange;
-        Task DeleteProductFromCartAsync(int id, int productTypeId);
+        Task RemoveProductFromCartAsync(int id, int productTypeId);
         Task UpdateQuantityAsync(CartProductResponse cartProductResponse);
         Task StoreCartItemsAsync(bool emptyLocalCart);
         Task GetCartItemsCountAsync();

@@ -11,7 +11,7 @@ namespace BlazorEcommerce.Client.Pages
 
         protected async Task RemoveProductFromCartAsync(int productId, int productTypeId)
         {
-            await CartService!.DeleteProductFromCartAsync(productId, productTypeId);
+            await CartService!.RemoveProductFromCartAsync(productId, productTypeId);
             await LoadCartAsync();
         }
 

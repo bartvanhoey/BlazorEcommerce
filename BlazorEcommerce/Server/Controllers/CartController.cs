@@ -13,32 +13,24 @@ namespace Server.Controllers
         public CartController(ICartService cartService) => _cartService = cartService;
 
         [HttpPost("products")]
-        public async Task<ActionResult<ServiceResponse<List<CartProductResponse>>>> GetCartProducts(List<CartItem> cartItems)
-        {
-            var result = await _cartService.GetCartProductsAsync(cartItems);
-            return Ok(result);
-        }
+        public async Task<ActionResult<ServiceResponse<List<CartProductResponse>>>> GetCartProducts(List<CartItem> cartItems) 
+            => Ok(await _cartService.GetCartProductsAsync(cartItems));
 
         [HttpPost]
-        public async Task<ActionResult<ServiceResponse<List<CartProductResponse>>>> StoreCartItems(List<CartItem> cartItems)
-        {
-            var result = await _cartService.StoreCartAsync(cartItems);
-            return Ok(result);
-        }
+        public async Task<ActionResult<ServiceResponse<List<CartProductResponse>>>> StoreCartItems(List<CartItem> cartItems) 
+            => Ok(await _cartService.StoreCartAsync(cartItems));
 
         [HttpPut("update-quantity")]
-        public async Task<ActionResult<ServiceResponse<bool>>> UpdateQuantity(CartItem cartItem)
-        {
-            var result = await _cartService.UpdateQuantityAsync(cartItem);
-            return Ok(result);
-        }
+        public async Task<ActionResult<ServiceResponse<bool>>> UpdateQuantity(CartItem cartItem) 
+            => Ok(await _cartService.UpdateQuantityAsync(cartItem));
 
         [HttpPut("add")]
-        public async Task<ActionResult<ServiceResponse<bool>>> AddToCart(CartItem cartItem)
-        {
-            var result = await _cartService.AddToCartAsync(cartItem);
-            return Ok(result);
-        }
+        public async Task<ActionResult<ServiceResponse<bool>>> AddToCart(CartItem cartItem) 
+            => Ok(await _cartService.AddToCartAsync(cartItem));
+
+        [HttpDelete("{productId}/{productTypeId}")]
+        public async Task<ActionResult<ServiceResponse<bool>>> RemoveItemFromCart(int productId, int productTypeId) 
+            => Ok(await _cartService.RemoveItemFromCartAsync(productId, productTypeId));
 
 
         [HttpGet("count")]
