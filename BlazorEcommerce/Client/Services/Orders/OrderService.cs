@@ -1,3 +1,6 @@
+
+using System.IO.Pipelines;
+
 namespace Client.Services.Orders
 {
     public class OrderService : IOrderService
@@ -11,6 +14,13 @@ namespace Client.Services.Orders
             _http = http;
             _authenticationStateProvider = authenticationStateProvider;
             _navigationManager = navigationManager;
+        }
+
+        public async Task<List<OrderOverviewResponse>> GetOrdersAsync()
+        {
+            var response = await _http.GetFromJsonAsync<ServiceResponse<List<OrderOverviewResponse>>>("api/order");
+            return response?.Data == null ? new List<OrderOverviewResponse>() : response.Data;
+
         }
 
         public async Task PlaceOrderAsync()

@@ -8,5 +8,6 @@ namespace Client.Services.Orders
     public interface IOrderService
     {
         Task PlaceOrderAsync();
+        Task<List<OrderOverviewResponse>> GetOrdersAsync();
     }
 }
