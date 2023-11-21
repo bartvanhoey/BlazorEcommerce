@@ -44,6 +44,8 @@ namespace Server.Services.Orders
             };
 
             _db.Orders.Add(order);
+            _db.CartItems.RemoveRange(_db.CartItems.Where(ci => ci.UserId == GetUserId()));
+
             await _db.SaveChangesAsync();
 
             return new ServiceResponse<bool> { Data = true };
