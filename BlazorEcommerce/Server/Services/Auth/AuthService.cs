@@ -11,11 +11,13 @@ namespace Server.Services.Auth
     {
         private readonly DatabaseContext _db;
         private readonly IConfiguration _configuration;
+        private readonly IHttpContextAccessor _accessor;
 
-        public AuthService(DatabaseContext databaseContext, IConfiguration configuration)
+        public AuthService(DatabaseContext databaseContext, IConfiguration configuration, IHttpContextAccessor accessor)
         {
             _db = databaseContext;
             _configuration = configuration;
+            _accessor = accessor;
         }
 
         public async Task<ServiceResponse<int>> RegisterAsync(User user, string password)
@@ -120,6 +122,8 @@ namespace Server.Services.Auth
 
             return new ServiceResponse<bool> { Data = true, Message = "Password changed!" };
         }
+        public int GetUserId()
+            => int.Parse(_accessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier) ?? "-1");
     }
 
 }

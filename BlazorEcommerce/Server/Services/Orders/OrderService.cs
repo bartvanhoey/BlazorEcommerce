@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Server.Data;
+using Server.Services.Auth;
 using Server.Services.Cart;
 using Shared;
 
@@ -9,13 +10,13 @@ namespace Server.Services.Orders
     {
         private readonly DatabaseContext _db;
         private readonly ICartService _cartService;
-        private readonly IHttpContextAccessor _accessor;
+        private readonly IAuthService _authService;
 
-        public OrderService(DatabaseContext context, ICartService cartService, IHttpContextAccessor httpContextAccessor)
+        public OrderService(DatabaseContext context, ICartService cartService, IAuthService authService )
         {
             _db = context;
             _cartService = cartService;
-            _accessor = httpContextAccessor;
+            _authService = authService;
         }
 
         public async Task<ServiceResponse<bool>> PlaceOrderAsync()
@@ -37,21 +38,20 @@ namespace Server.Services.Orders
 
             var order = new Order()
             {
-                UserId = GetUserId(),
+                UserId = _authService.GetUserId(),
                 OrderDate = DateTime.Now,
                 TotalPrice = totalPrice,
                 OrderItems = orderItems
             };
 
             _db.Orders.Add(order);
-            _db.CartItems.RemoveRange(_db.CartItems.Where(ci => ci.UserId == GetUserId()));
+            _db.CartItems.RemoveRange(_db.CartItems.Where(ci => ci.UserId == _authService.GetUserId()));
 
             await _db.SaveChangesAsync();
 
             return new ServiceResponse<bool> { Data = true };
         }
 
-        private int GetUserId()
-            => int.Parse(_accessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier) ?? "-1");
+        
     }
 }
