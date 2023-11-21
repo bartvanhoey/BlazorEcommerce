@@ -1,7 +1,6 @@
 @page "/cart"
 @inherits CartBase
 
-
 <PageTitle>Shopping Cart</PageTitle>
 
 <h3>Shopping Cart</h3>
@@ -36,4 +35,5 @@ else
         Total (@CartProducts.Count) : $@CartProducts.Sum(p => p.Price * p.Quantity)
     </div>
 </div>
+<button @onclick="PlaceOrderAsync" class="btn alert-success float-end mt-1" >Place Order</button>
 }

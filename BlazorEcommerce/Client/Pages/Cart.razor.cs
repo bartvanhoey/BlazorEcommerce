@@ -1,3 +1,5 @@
+using Client.Services.Orders;
+
 namespace BlazorEcommerce.Client.Pages
 {
     public class CartBase : ComponentBase
@@ -6,6 +8,8 @@ namespace BlazorEcommerce.Client.Pages
         protected string Message = "Loading cart...";
 
         [Inject] protected ICartService? CartService { get; set; }
+
+        [Inject] protected IOrderService? OrderService { get; set; }
 
         protected override async Task OnInitializedAsync() => await LoadCartAsync();
 
@@ -37,6 +41,12 @@ namespace BlazorEcommerce.Client.Pages
             if (product.Quantity < 1) product.Quantity = 1;
             await CartService!.UpdateQuantityAsync(product);
         }
+
+        protected async Task PlaceOrderAsync()
+        {
+            await OrderService!.PlaceOrderAsync();
+        }
+
 
     }
 }
