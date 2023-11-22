@@ -24,7 +24,7 @@ namespace Server.Controllers
         public async Task<ActionResult<ServiceResponse<bool>>> UpdateQuantity(CartItem cartItem) 
             => Ok(await _cartService.UpdateQuantityAsync(cartItem));
 
-        [HttpPut("add")]
+        [HttpPost("add")]
         public async Task<ActionResult<ServiceResponse<bool>>> AddToCart(CartItem cartItem) 
             => Ok(await _cartService.AddToCartAsync(cartItem));
 

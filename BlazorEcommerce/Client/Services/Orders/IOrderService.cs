@@ -9,5 +9,6 @@ namespace Client.Services.Orders
     {
         Task PlaceOrderAsync();
         Task<List<OrderOverviewResponse>> GetOrdersAsync();
+        Task<OrderDetailsResponse?> GetOrderDetailsAsync(int orderId);
     }
 }

@@ -16,11 +16,16 @@ namespace Client.Services.Orders
             _navigationManager = navigationManager;
         }
 
+        public async Task<OrderDetailsResponse?> GetOrderDetailsAsync(int orderId)
+        {
+            var response = await _http.GetFromJsonAsync<ServiceResponse<OrderDetailsResponse>>($"api/order/{orderId}");
+            return response?.Data;
+        }
+
         public async Task<List<OrderOverviewResponse>> GetOrdersAsync()
         {
             var response = await _http.GetFromJsonAsync<ServiceResponse<List<OrderOverviewResponse>>>("api/order");
             return response?.Data == null ? new List<OrderOverviewResponse>() : response.Data;
-
         }
 
         public async Task PlaceOrderAsync()

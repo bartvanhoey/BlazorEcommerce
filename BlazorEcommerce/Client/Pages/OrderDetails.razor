@@ -1,0 +1,29 @@
+@page "/orders/{orderId:int}"
+@inherits OrderDetailsBase
+
+@if (Order == null)
+{
+    <span>Loading order...</span>
+}
+else
+{
+    <h3>Order from @Order.OrderDate</h3>
+    <div>
+        @foreach (var product in Order.Products)
+        {
+            <div class="container">
+                <div class="image-wrappper">
+                    <img src="@product.ImageUrl" class="image" />
+                </div>
+                <div class="name">
+                    <h5><a href="/product/@product.ProductId">@product.Title</a></h5>
+                    <span>@product.ProductType</span>
+                    <br>
+                    <span>Quantity: @product.Quantity</span>
+                </div>
+                <div class="product-price">$@product.TotalPrice</div>
+            </div>
+        }
+        <div class="product-price">Total: $@Order.TotalPrice</div>
+    </div>
+}
