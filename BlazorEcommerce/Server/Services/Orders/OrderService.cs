@@ -24,7 +24,10 @@ namespace Server.Services.Orders
             var response = new ServiceResponse<List<OrderOverviewResponse>>();
             var orders = await _db.Orders
                 .Include(x => x.OrderItems)
-                .ThenInclude(x => x.ProductId).Where(o => o.UserId == _authService.GetUserId()).OrderByDescending(o => o.OrderDate).ToListAsync();
+                .ThenInclude(x => x.Product)
+                .Where(o => o.UserId == _authService.GetUserId())
+                .OrderByDescending(o => o.OrderDate)
+                .ToListAsync();
 
             var orderResponse = new List<OrderOverviewResponse>();
             orders.ForEach(o => orderResponse.Add(new OrderOverviewResponse()
