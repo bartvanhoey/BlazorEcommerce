@@ -3,8 +3,13 @@ namespace Client.Services.Auth
     public class AuthService : IAuthService
     {
         private readonly HttpClient _http;
+        private readonly AuthenticationStateProvider _authenticationStateProvider;
 
-        public AuthService(HttpClient http) => _http = http;
+        public AuthService(HttpClient http, AuthenticationStateProvider authenticationStateProvider)
+        {
+            _authenticationStateProvider = authenticationStateProvider;
+            _http = http;
+        }
 
         public async Task<ServiceResponse<bool>> ChangePasswordAsync(UserChangePasswordModel model)
         {
@@ -13,6 +18,9 @@ namespace Client.Services.Auth
                        .ReadFromJsonAsync<ServiceResponse<bool>>()
                    ?? new ServiceResponse<bool>() { Success = false, Message = "Change Password Failed" };
         }
+
+        public async Task<bool> IsUserAuthenticatedAsync() 
+            => (await _authenticationStateProvider.GetAuthenticationStateAsync())?.User?.Identity?.IsAuthenticated ?? false;
 
         public async Task<ServiceResponse<string>> LoginAsync(UserLoginModel model)
             => await (await _http.PostAsJsonAsync("api/auth/login", model)).Content.ReadFromJsonAsync<ServiceResponse<string>>()

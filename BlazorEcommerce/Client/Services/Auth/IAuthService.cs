@@ -10,5 +10,6 @@ namespace Client.Services.Auth
         Task<ServiceResponse<int>> RegisterAsync(UserRegisterModel model);
         Task<ServiceResponse<string>> LoginAsync(UserLoginModel model);
         Task<ServiceResponse<bool>> ChangePasswordAsync(UserChangePasswordModel model);
+        Task<bool> IsUserAuthenticatedAsync();
     }
 }
