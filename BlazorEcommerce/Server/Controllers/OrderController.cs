@@ -22,6 +22,11 @@ namespace Server.Controllers
         public async Task<ActionResult<ServiceResponse<List<OrderOverviewResponse>>>> GetOrders() 
             => Ok(await _orderService.GetOrdersAsync());
 
+        [HttpGet("{orderId}")]
+        public async Task<ActionResult<ServiceResponse<OrderDetailsResponse>>> GetOrderDetails(int orderId) 
+            => Ok(await _orderService.GetOrderDetailsAsync(orderId));
+    
+
 
 
     }
