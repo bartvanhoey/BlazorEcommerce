@@ -28,15 +28,17 @@ namespace Client.Services.Orders
             return response?.Data == null ? new List<OrderOverviewResponse>() : response.Data;
         }
 
-        public async Task PlaceOrderAsync()
+        public async Task<string> PlaceOrderAsync()
         {
             if (await IsUserAuthenticatedAsync())
             {
-                await _http.PostAsync("api/order", null);
+                var response =  await _http.PostAsync("api/payment/checkout", null);
+                var url = await response.Content.ReadAsStringAsync();
+                return url;
             }
             else
             {
-                _navigationManager!.NavigateTo("login", false);
+                return "login";
             }
         }
 
