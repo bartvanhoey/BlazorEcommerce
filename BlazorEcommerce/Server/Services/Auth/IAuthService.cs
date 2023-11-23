@@ -8,7 +8,7 @@ namespace Server.Services.Auth
         Task<ServiceResponse<string>> LoginAsync(string email, string password);
         Task<ServiceResponse<bool>> ChangePasswordAsync(int userId, string password);
         Task<bool> UserExists(string email);
-
+        string? GetUserEmail();
         int GetUserId();
 
     }

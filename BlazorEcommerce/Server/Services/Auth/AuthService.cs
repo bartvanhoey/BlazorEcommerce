@@ -124,6 +124,9 @@ namespace Server.Services.Auth
         }
         public int GetUserId()
             => int.Parse(_accessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier) ?? "-1");
+
+        public string? GetUserEmail()
+            => _accessor.HttpContext?.User?.FindFirstValue(ClaimTypes.Email);
     }
 
 }
