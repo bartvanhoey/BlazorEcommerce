@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Server.Services.Payments;
+using Shared;
 
 namespace Server.Controllers
 {
@@ -24,6 +21,14 @@ namespace Server.Controllers
         {
             var session = await _paymentService.CreateCheckoutSessionAsync();
             return Ok(session?.Url);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<ServiceResponse<bool>>> FulfillOrder()
+        {
+            var response = await _paymentService.FulFillOrderAsync(Request);
+            if (!response.Success) return BadRequest(response.Message);
+            return Ok(response);
         }
 
     }

@@ -9,6 +9,7 @@ namespace Server.Services.Auth
         Task<ServiceResponse<bool>> ChangePasswordAsync(int userId, string password);
         Task<bool> UserExists(string email);
         string? GetUserEmail();
+        Task<User?> GetUserByEmailAsync(string email);
         int GetUserId();
 
     }

@@ -126,7 +126,13 @@ namespace Server.Services.Auth
             => int.Parse(_accessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier) ?? "-1");
 
         public string? GetUserEmail()
-            => _accessor.HttpContext?.User?.FindFirstValue(ClaimTypes.Email);
+        {
+            var findFirstValue = _accessor.HttpContext?.User?.FindFirstValue(ClaimTypes.Name);
+            return findFirstValue;
+        }
+
+        public async Task<User?> GetUserByEmailAsync(string email) 
+            => await _db.Users.FirstOrDefaultAsync(u => u.Email.Equals(email));
     }
 
 }

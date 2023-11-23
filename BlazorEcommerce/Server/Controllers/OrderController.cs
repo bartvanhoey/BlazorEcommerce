@@ -13,9 +13,9 @@ namespace Server.Controllers
 
         public OrderController(IOrderService orderService) => _orderService = orderService;
 
-        [HttpPost]
-        public async Task<ActionResult<ServiceResponse<bool>>> PlaceOrder()
-            => Ok(await _orderService.PlaceOrderAsync());
+        // [HttpPost]
+        // public async Task<ActionResult<ServiceResponse<bool>>> PlaceOrder()
+        //     => Ok(await _orderService.PlaceOrderAsync());
 
 
         [HttpGet]

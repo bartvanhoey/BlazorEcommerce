@@ -8,7 +8,7 @@ namespace Server.Services.Orders
 {
     public interface IOrderService
     {
-        Task<ServiceResponse<bool>> PlaceOrderAsync();
+        Task<ServiceResponse<bool>> PlaceOrderAsync(int userId);
         Task<ServiceResponse<List<OrderOverviewResponse>>> GetOrdersAsync();
         Task<ServiceResponse<OrderDetailsResponse>> GetOrderDetailsAsync(int orderId);
     }

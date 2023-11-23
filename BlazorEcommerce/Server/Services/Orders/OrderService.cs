@@ -86,9 +86,9 @@ namespace Server.Services.Orders
             return response;
         }
 
-        public async Task<ServiceResponse<bool>> PlaceOrderAsync()
+        public async Task<ServiceResponse<bool>> PlaceOrderAsync(int userId)
         {
-            var products = (await _cartService.GetDbCartProductsAsync()).Data;
+            var products = (await _cartService.GetDbCartProductsAsync(userId)).Data;
             if (products == null || products.Count == 0) return new ServiceResponse<bool>() { Data = true };
 
             decimal totalPrice = 0;
@@ -105,14 +105,14 @@ namespace Server.Services.Orders
 
             var order = new Order()
             {
-                UserId = _authService.GetUserId(),
+                UserId = userId,
                 OrderDate = DateTime.Now,
                 TotalPrice = totalPrice,
                 OrderItems = orderItems
             };
 
             _db.Orders.Add(order);
-            _db.CartItems.RemoveRange(_db.CartItems.Where(ci => ci.UserId == _authService.GetUserId()));
+            _db.CartItems.RemoveRange(_db.CartItems.Where(ci => ci.UserId == userId));
 
             await _db.SaveChangesAsync();
 

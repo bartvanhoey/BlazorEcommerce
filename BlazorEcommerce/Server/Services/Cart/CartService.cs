@@ -53,8 +53,11 @@ namespace Server.Services.Cart
             return new ServiceResponse<int> { Data = count };
         }
 
-        public async Task<ServiceResponse<List<CartProductResponse>>> GetDbCartProductsAsync()
-            => await GetCartProductsAsync(await _dbContext.CartItems.Where(x => x.UserId == _authService.GetUserId()).ToListAsync());
+        public async Task<ServiceResponse<List<CartProductResponse>>> GetDbCartProductsAsync(int? userId = null)
+        {
+            userId ??= _authService.GetUserId();
+            return await GetCartProductsAsync(await _dbContext.CartItems.Where(x => x.UserId == userId).ToListAsync());
+        }
 
         public async Task<ServiceResponse<List<CartProductResponse>>> StoreCartAsync(List<CartItem> cartItems)
         {
