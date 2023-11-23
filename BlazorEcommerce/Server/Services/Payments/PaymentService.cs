@@ -48,8 +48,11 @@ namespace Server.Services.Payments
 
             var options = new SessionCreateOptions
             {
-                
                 CustomerEmail = customerEmail,
+                ShippingAddressCollection = new SessionShippingAddressCollectionOptions
+                {
+                    AllowedCountries = new List<string> { "US" }
+                },
                 PaymentMethodTypes = new List<string> { "card" },
                 LineItems = lineItems,
                 Mode = "payment",
