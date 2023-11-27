@@ -15,11 +15,8 @@ namespace Client.Services.Addresses
     {
         private readonly HttpClient _http;
 
-        public AddressService(HttpClient client)
-        {
-            _http = client;
-            
-        }
+        public AddressService(HttpClient client) 
+            => _http = client;
         public async Task<Address> AddOrdUpdateAddressAsync(Address address)
         {
             var response = await _http.PostAsJsonAsync("api/address", address);
@@ -30,7 +27,6 @@ namespace Client.Services.Addresses
         {
             var response = await _http.GetFromJsonAsync<ServiceResponse<Address>>("api/address");
             return response.Data;
-
         }
     }
 }
