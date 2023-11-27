@@ -21,11 +21,11 @@ namespace Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ServiceResponse<Address>>> GetAddress() 
+        public async Task<ActionResult<ServiceResponse<Address>>> GetAddress()
             => await _addressService.GetAddressAsync();
 
         [HttpPost]
-        public async Task<ActionResult<ServiceResponse<Address>>> AddOrUpdateAddress(Address address) 
+        public async Task<ActionResult<ServiceResponse<Address>>> AddOrUpdateAddress(Address address)
         => await _addressService.AddOrUpdateAddressAsync(address);
     }
 }
