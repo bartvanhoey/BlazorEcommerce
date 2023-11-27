@@ -36,5 +36,18 @@ else
             Total (@CartProducts.Count) : $@CartProducts.Sum(p => p.Price * p.Quantity)
         </div>
     </div>
+
+    if (IsAuthenticated)
+    {
+        <div>
+            <h5>Delivery Address</h5>
+            <AddressForm />
+            <p></p>
+
+        </div>
+
+    }
+
+
     <button @onclick="PlaceOrderAsync" class="btn alert-success float-end mt-1">Check Out</button>
 }

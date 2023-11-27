@@ -37,6 +37,8 @@ namespace Server.Services.Addresses
                 dbAddress.ZipCode = address.ZipCode;
                 dbAddress.State = address.State;
                 dbAddress.Country = address.Country;
+                response.Data = dbAddress;
+
             }
 
             await _db.SaveChangesAsync();

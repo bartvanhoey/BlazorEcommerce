@@ -10,6 +10,10 @@
     <h3>Hi, you are logged in with <i>@context.User.Identity.Name</i></h3>
 </AuthorizeView>
 
+<h5>Delivery Address</h5>
+<AddressForm />
+<p></p>
+
 <EditForm Model="model" OnValidSubmit="ChangePasswordAsync">
     <DataAnnotationsValidator></DataAnnotationsValidator>
     <div class="mb-3">

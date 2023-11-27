@@ -6,8 +6,11 @@ namespace BlazorEcommerce.Client.Pages
     {
         protected List<CartProductResponse> CartProducts = new();
         protected string Message = "Loading cart...";
+        protected bool IsAuthenticated = false;
 
         [Inject] protected ICartService? CartService { get; set; }
+
+        [Inject] protected IAuthService? AuthService { get; set; }
 
         [Inject] protected IOrderService? OrderService { get; set; }
 
@@ -15,6 +18,7 @@ namespace BlazorEcommerce.Client.Pages
 
         protected override async Task OnInitializedAsync()
         {
+            IsAuthenticated = await AuthService.IsUserAuthenticatedAsync();
             await LoadCartAsync();
         }
 
@@ -49,7 +53,7 @@ namespace BlazorEcommerce.Client.Pages
 
         protected async Task PlaceOrderAsync()
         {
-           string url =  await OrderService!.PlaceOrderAsync();
+            string url = await OrderService!.PlaceOrderAsync();
             // await CartService!.GetCartItemsCountAsync();
             // OrderPlaced =true;
             NavigationManager!.NavigateTo(url, false);
