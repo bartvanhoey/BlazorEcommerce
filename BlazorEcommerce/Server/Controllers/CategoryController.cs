@@ -40,7 +40,6 @@ namespace Server.Controllers
             var result = await _categoryService.AddCategoryAsync(category);
             return Ok(result);
         }
-
         
         [HttpPut("admin"), Authorize(Roles = "admin")]
         public async Task<ActionResult<ServiceResponse<List<Category>>>> UpdateCategory(Category category)
@@ -48,8 +47,5 @@ namespace Server.Controllers
             var result = await _categoryService.UpdateCategoryAsync(category);
             return Ok(result);
         }
-
-
-            
     }
 }
