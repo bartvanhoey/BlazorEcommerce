@@ -27,8 +27,8 @@ namespace Server.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("admin"), Authorize(Roles = "admin")]
-        public async Task<ActionResult<ServiceResponse<List<Category>>>> GetDeleteCategory(int id)
+        [HttpDelete("admin/{id}"), Authorize(Roles = "admin")]
+        public async Task<ActionResult<ServiceResponse<List<Category>>>> DeleteCategory(int id)
         {
             var result = await _categoryService.DeleteCategoryAsync(id);
             return Ok(result);

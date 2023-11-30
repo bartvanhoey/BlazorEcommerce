@@ -1,14 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace Client.Services.Categories
 {
     public interface ICategoryService
     {
 
-        
-          Task<ServiceResponse<List<Category>>> GetCategoriesAsync();
+        event Action OnChange;
+        Task<ServiceResponse<List<Category>>> GetCategoriesAsync();
+        Task<ServiceResponse<List<Category>>> GetAdminCategoriesAsync();
+        Task AddCategoryAsync(Category category);
+        Task UpdateCategoryAsync(Category category);
+        Task DeleteCategoryAsync(int categoryId);
+        Category CreateNewCategory();
+
+
+
+
     }
 }
