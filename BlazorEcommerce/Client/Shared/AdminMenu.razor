@@ -1,0 +1,22 @@
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@using System.Security.Claims
+
+@if (IsAuthorized)
+{
+    <a class="dropdown-item" href="admin/categories">Categories</a>
+    <hr>
+}
+
+@code {
+    protected bool IsAuthorized = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = (await AuthenticationStateProvider.GetAuthenticationStateAsync())?.User.Identity;
+
+        var role = (await AuthenticationStateProvider.GetAuthenticationStateAsync())?
+        .User?.Claims?.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+
+        IsAuthorized  = (!string.IsNullOrWhiteSpace(role) && role.Contains("admin", StringComparison.InvariantCultureIgnoreCase));
+    }
+}
