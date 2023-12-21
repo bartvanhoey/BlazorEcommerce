@@ -4,6 +4,7 @@
 @if (IsAuthorized)
 {
     <a class="dropdown-item" href="admin/categories">Categories</a>
+    <a class="dropdown-item" href="admin/product-types">ProductTypes</a>
     <hr>
 }
 
@@ -15,7 +16,7 @@
         var authState = (await AuthenticationStateProvider.GetAuthenticationStateAsync())?.User.Identity;
 
         var role = (await AuthenticationStateProvider.GetAuthenticationStateAsync())?
-        .User?.Claims?.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+             .User?.Claims?.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
 
         IsAuthorized  = (!string.IsNullOrWhiteSpace(role) && role.Contains("admin", StringComparison.InvariantCultureIgnoreCase));
     }

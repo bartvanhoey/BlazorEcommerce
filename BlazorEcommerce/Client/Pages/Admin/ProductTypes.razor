@@ -1,0 +1,101 @@
+@page "/admin/product-types"
+@inject IProductTypeService ProductTypeService
+
+<h3>Product Types</h3>
+
+
+@foreach (var producttype in ProductTypeService.ProductTypes)
+{
+    @if (producttype.Editing)
+    {
+        <EditForm Model="EditingProductType" OnSubmit="UpdateProductType">
+            <div class="row">
+                <div class="col">
+                    <InputText @bind-Value="EditingProductType.Name" class="form-control"></InputText>
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="oi oi-cloud-upload"></i>
+                    </button>
+                    @* <button class="btn btn-primary" @onclick="CancelEditing">
+                        <i class="oi oi-circle-x"></i>
+                    </button> *@
+                </div>
+            </div>
+            
+            @* <div class="row">
+                <div class="col">
+                    <InputText @bind-Value="EditingProductType.Name" class="form-control"></InputText>
+                </div>
+                <div class="col">
+                    <InputText @bind-Value="EditingProductType.Url" class="form-control"></InputText>
+                </div>
+                <div class="col col-visible">
+                    <InputCheckbox @bind-Value="EditingProductType.Visible" style="transform: scale(1.5,1.5);"></InputCheckbox>
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="oi oi-cloud-upload"></i>
+                    </button>
+                    <button class="btn btn-primary" @onclick="CancelEditing">
+                        <i class="oi oi-circle-x"></i>
+                    </button>
+                </div>
+            </div> *@
+        </EditForm>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-2">
+                @producttype.Name
+            </div>
+            <div class="col-2">
+                <button class="btn btn-primary" @onclick="(() => EditProductType(producttype))">
+                    <i class="oi oi-pencil"></i>
+                </button>
+                @* <button class="btn btn-primary" @onclick="(() => DeleteProductType(producttype.Id))">
+                    <i class="oi oi-trash"></i>
+                </button> *@
+            </div>
+        </div>
+    }
+}
+<button class="btn btn-primary" @onclick="CreateNewProductType">
+    <i class="oi oi-plus"></i> Add new producttype
+</button>
+
+
+
+
+
+@code {
+
+    ProductType EditingProductType = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ProductTypeService.GetProductTypesAsync();
+    }
+
+    protected void EditProductType(ProductType productType)
+    {
+        productType.Editing = true;
+        EditingProductType = productType;
+    }
+
+    protected void CreateNewProductType()
+    {
+
+    }
+
+    protected async Task UpdateProductType()
+    {
+        
+
+    }
+
+
+
+
+}
