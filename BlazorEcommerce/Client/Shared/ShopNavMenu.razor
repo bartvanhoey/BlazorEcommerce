@@ -16,7 +16,7 @@
             </NavLink>
         </div>
 
-        @foreach (var category in Categories)
+        @foreach (var category in categoryService.Categories)
         {
             <div class="nav-item px-2">
                 <NavLink class="nav-link" href="@category.Url">
@@ -40,11 +40,6 @@
         collapseNavMenu = !collapseNavMenu;
     }
 
-    protected override async Task OnInitializedAsync()
-    {
-        var categories = await categoryService.GetCategoriesAsync();
-        if (categories.Success)
-            Categories = categories.Data ?? new List<Category>();
-    }
+    protected override async Task OnInitializedAsync() => await categoryService.GetCategoriesAsync();
 
 }

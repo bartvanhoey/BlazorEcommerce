@@ -11,6 +11,7 @@ using Server.Services.Auth;
 using Server.Services.Cart;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +47,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = false
         };
     });
+     
+     // Need to do this as it maps "role" to ClaimTypes.Role and causes issues
+    //  JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("role");
 
 builder.Services.AddHttpContextAccessor();
 
